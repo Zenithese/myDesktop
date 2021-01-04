@@ -1,0 +1,43 @@
+.folder {
+    text-align: center;
+    border: 5px solid transparent;
+    width: 84px;
+}
+
+/* .folder-image-container {
+    
+} */
+
+.folder-image {
+    max-width: 100%;
+}
+
+.folder-input {
+    background-color: transparent; 
+    border: none; 
+    font-size: 12px;
+    font-weight: bold;
+    color: white; 
+    text-shadow: 1px 1px 1px black;
+    width: 100px;
+}
+
+.folder-name-container {
+    /* width: 75px;
+    margin: auto; */
+    text-align: center;
+}
+
+.current-droppable {
+    background-color: cyan;
+    border: 5px solid cyan;
+    border-radius: 2px;
+}
+
+#input {
+    font-size: 12px;
+    font-weight: bold;
+    color: white; 
+    text-shadow: 1px 1px 1px black;
+    padding: 1px 6px;
+}
