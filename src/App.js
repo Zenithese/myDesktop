@@ -1,7 +1,8 @@
 import './App.css';
 import { useEffect, useState } from 'react';
 import ContextMenu from './context_menu/contextmenu';
-import Folder from './folder/folder'
+import Folder from './folder/folder';
+import Contents from './contents/contents'
 
 function App() {
 
@@ -52,7 +53,7 @@ function App() {
         ]} />
       </div>
       <Folder />
-      <Folder />
+      {/* <Contents /> */}
     </div>
   );
 }

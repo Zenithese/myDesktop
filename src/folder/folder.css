@@ -2,6 +2,8 @@
     text-align: center;
     border: 5px solid transparent;
     width: 84px;
+    height: 84px;
+    justify-self: center;
 }
 
 /* .folder-image-container {
@@ -28,7 +30,7 @@
     text-align: center;
 }
 
-.current-droppable {
+.current {
     background-color: cyan;
     border: 5px solid cyan;
     border-radius: 2px;

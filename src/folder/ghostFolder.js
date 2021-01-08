@@ -1,7 +1,7 @@
 import './folder.css'
 import React, { useState, useEffect, useRef } from 'react';
 import ContentEditable from 'react-contenteditable';
-import Contents from '../contents/contents'
+import Placeholder from './placeholder';
 
 export default function Folder() {
 
@@ -17,7 +17,6 @@ export default function Folder() {
     const [nest, setNest] = useState(document.querySelector(".App"))
     const [gridRowStart, setGridRowStart] = useState("auto")
     const [gridColStart, setGridColStart] = useState("auto")
-    const [display, setDisplay] = useState("none")
     const folderEl = useRef(null)
 
     useEffect(() => {
@@ -35,56 +34,56 @@ export default function Folder() {
         }
     }, [moving])
 
-    useEffect (() => {
+    useEffect(() => {
         if (offSetY) {
-            document.addEventListener('mousemove', drag)
-            document.addEventListener('mouseup', stop)
+            document.addEventListener('drag', drag)
+            document.addEventListener('dragend', stop)
         }
     }, [offSetY])
 
-    useEffect(() => {
-        if (position === null) {
-            setOffSetY(0)
-            setOffSetX(0)
-            setY(nest.getBoundingClientRect().top + 5)
-            setX(nest.getBoundingClientRect().left + 5)
-        }
-    }, [position])
+    // useEffect(() => {
+    //     if (position === null) {
+    //         setOffSetY(0)
+    //         setOffSetX(0)
+    //         setY(nest.getBoundingClientRect().top + 5)
+    //         setX(nest.getBoundingClientRect().left + 5)
+    //     }
+    // }, [position])
 
     const handleInput = (e) => {
         setValue(e.target.value)
     }
 
-    const start = (e) => {
-        if (e.target.className === "folder-image") {
-            setMoving(true)
-            setPosition("absolute")
-            setClassName("folder")
-            setZ("1000")
-            setOffSetX(e.pageX - e.target.getBoundingClientRect().left + 5)
-            setOffSetY(e.pageY - e.target.getBoundingClientRect().top + 5)
-            setTimeout(() => document.querySelector(".App").appendChild(folderEl.current), 300);
-        }
+    const setImage = (e) => {
+        // e.stopPropagation();
+        // e.dataTransfer.effectAllowed = 'move';
+        // e.dataTransfer.setDragImage(folderEl.current, 20, 20);
+        setMoving(true)
+        setPosition("absolute")
+        setClassName("folder")
+        setZ("1000")
+        setOffSetX(e.pageX - e.target.getBoundingClientRect().left + 5)
+        setOffSetY(e.pageY - e.target.getBoundingClientRect().top + 5)
+        document.querySelector(".App").appendChild(folderEl.current)
     }
 
     const drag = (e) => {
-        e.preventDefault()
-        if (folderEl.current) {
-            setY(Math.min(Math.max(0, e.pageY - offSetY), document.body.clientHeight - folderEl.current.offsetHeight))
-            setX(Math.min(Math.max(0, e.pageX - offSetX), document.body.clientWidth - folderEl.current.offsetWidth))
-        }
-        nestFolder(e)
+        console.log("drag")
     }
 
     const stop = (e) => {
-        e.preventDefault()
+        console.log("over")
+        // e.preventDefault()
+        nestFolder(e)
+        setY(Math.min(Math.max(0, e.pageY - offSetY), document.body.clientHeight - folderEl.current.offsetHeight))
+        setX(Math.min(Math.max(0, e.pageX - offSetX), document.body.clientWidth - folderEl.current.offsetWidth))
         setOffSetX(0)
         setOffSetY(0)
         setMoving(false)
         setZ("0")
         setClassName("droppable folder")
-        document.removeEventListener('mousemove', drag)
-        document.removeEventListener('mouseup', stop)
+        document.removeEventListener('drag', drag)
+        document.removeEventListener('dragend', stop)
     }
 
     const nestFolder = (e) => {
@@ -113,12 +112,7 @@ export default function Folder() {
             className={className}
             style={{ "position": position, "top": y, "left": x, "zIndex": z }}>
             <div className="folder-image-container">
-                <img 
-                    className="folder-image"
-                    alt="" 
-                    src="http://icon-park.com/imagefiles/folder_icon_yellow.png"
-                    onMouseDown={(e) => start(e)} 
-                    onDoubleClick={() => setDisplay("grid")} />
+                <img className="folder-image" alt="" src="http://icon-park.com/imagefiles/folder_icon_yellow.png" onDragStart={(e) => setImage(e)}/>
             </div>
             <div className="folder-name-container" >
                 <ContentEditable
@@ -128,7 +122,6 @@ export default function Folder() {
                     className="content-editable"
                     onChange={(e) => handleInput(e)} />
             </div>
-            <Contents display={display} setDisplay={setDisplay} />
         </div>
     )
 }
