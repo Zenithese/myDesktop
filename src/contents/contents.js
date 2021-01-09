@@ -3,10 +3,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import ContentsBorder from './contentsBorder'
 // import Folder from '../folder/folder';
 
-export default function Contents({ display, setDisplay }) {
+export default function Contents({ display, setDisplay, contentsContainerEl, id }) {
 
     const contentsEl = useRef(null)
-    const contentsContainerEl = useRef(null)
     const [gridRow, setGridRow] = useState("")
     const [gridCol, setGridCol] = useState("")
     const [update, setUpdate] = useState(false)
@@ -20,7 +19,7 @@ export default function Contents({ display, setDisplay }) {
     const [height, setHeight] = useState(300)
 
     useEffect(() => {
-        console.log(display)
+        // console.log(display)
         const contents = contentsEl.current
         const width = contents.clientWidth
         const height = contents.clientHeight
@@ -43,8 +42,10 @@ export default function Contents({ display, setDisplay }) {
     }, [offSetY])
 
     const start = (e) => {
+        if (e.target.className === "close-button") return
         setClassName("contents")
         setZ("1000")
+        document.querySelector(".App").appendChild(contentsContainerEl.current)
         setOffSetX(e.pageX - e.target.getBoundingClientRect().left)
         setOffSetY(e.pageY - e.target.getBoundingClientRect().top)
     }
@@ -67,6 +68,10 @@ export default function Contents({ display, setDisplay }) {
         document.removeEventListener('mouseup', stop)
     }
 
+    const handleClose = () => {
+        setDisplay("none")
+    }
+
     return (
         <div ref={contentsContainerEl}
             className="contents-container"
@@ -75,9 +80,10 @@ export default function Contents({ display, setDisplay }) {
             <ContentsBorder width={width} setWidth={setWidth} height={height} setHeight={setHeight} setX={setX} setY={setY} />
             <div className="contents-handle"
                 onMouseDown={(e) => start(e)}>
-                <div className="close-button" onClick={() => setDisplay("none")}>x</div>
+                <div className="close-button" onClick={() => handleClose()}>x</div>
             </div>
             <div
+                id={id}
                 ref={contentsEl}
                 className={className}
                 style={{ "gridTemplateColumns": gridCol, "gridTemplateRows": gridRow, "width": `${width}px`, "height": `${height - 15}px` }}

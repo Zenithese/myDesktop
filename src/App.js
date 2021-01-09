@@ -53,6 +53,7 @@ function App() {
       </div>
       <Folder />
       <Folder />
+      <Folder />
     </div>
   );
 }
