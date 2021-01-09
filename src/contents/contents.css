@@ -1,12 +1,118 @@
+.contents-container {
+    width: 300px;
+    background-color: gray;
+    position: fixed;
+}
+
 .contents {
     width: 300px;
     height: 300px;
     background-color: gray;
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    border: 5px solid transparent;
     display: grid;
+}
+
+.contents-handle {
+    height: 15px;
+    background-color: red;
+}
+
+.close-button {
+    display: flex;
+    float: left;
+}
+
+.corner-1 {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: 5px;
+    height: 5px;
+    background-color: blue;
+}
+.corner-2 {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 5px;
+    height: 5px;
+    background-color: blue;
+}
+.corner-3 {
+    position: absolute;
+    bottom: -5px;
+    left: -5px;
+    width: 5px;
+    height: 5px;
+    background-color: blue;
+}
+.corner-4 {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    width: 5px;
+    height: 5px;
+    background-color: blue;
+}
+
+.corner-1:hover {
+    cursor: nw-resize;
+}
+
+.corner-2:hover {
+    cursor: ne-resize;
+}
+
+.corner-3:hover {
+    cursor: sw-resize;
+}
+
+.corner-4:hover {
+    cursor: se-resize;
+}
+
+.side-top {
+    position: absolute;
+    top: -5px;
+    width: 300px;
+    height: 5px;
+    background-color: blue;
+}
+.side-left {
+    position: absolute;
+    left: -5px;
+    width: 5px;
+    height: 315px;
+    background-color: blue;
+}
+.side-right {
+    position: absolute;
+    right: -5px;
+    width: 5px;
+    height: 315px;
+    background-color: blue;
+}
+.side-bottom {
+    position: absolute;
+    bottom: -5px;
+    width: 300px;
+    height: 5px;
+    background-color: blue;
+}
+
+.side-top:hover {
+    cursor: n-resize;
+}
+
+.side-left:hover {
+    cursor: w-resize;
+}
+
+.side-right:hover {
+    cursor: e-resize;
+}
+
+.side-bottom:hover {
+    cursor: s-resize;
 }
 
 /* .current {

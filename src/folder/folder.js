@@ -1,7 +1,7 @@
-import './folder.css'
+import './folder.css';
 import React, { useState, useEffect, useRef } from 'react';
 import ContentEditable from 'react-contenteditable';
-import Contents from '../contents/contents'
+import Contents from '../contents/contents';
 
 export default function Folder() {
 
@@ -56,20 +56,19 @@ export default function Folder() {
     }
 
     const start = (e) => {
-        if (e.target.className === "folder-image") {
-            setMoving(true)
-            setPosition("absolute")
-            setClassName("folder")
-            setZ("1000")
-            setOffSetX(e.pageX - e.target.getBoundingClientRect().left + 5)
-            setOffSetY(e.pageY - e.target.getBoundingClientRect().top + 5)
-            setTimeout(() => document.querySelector(".App").appendChild(folderEl.current), 300);
-        }
+        setMoving(true)
+        setPosition("absolute")
+        setClassName("folder")
+        setZ("1000")
+        setOffSetX(e.pageX - e.target.getBoundingClientRect().left + 5)
+        setOffSetY(e.pageY - e.target.getBoundingClientRect().top + 5)
+        setTimeout(() => document.querySelector(".App").appendChild(folderEl.current), 300);
     }
 
     const drag = (e) => {
         e.preventDefault()
         if (folderEl.current) {
+            if (display !== "none") setDisplay("none")
             setY(Math.min(Math.max(0, e.pageY - offSetY), document.body.clientHeight - folderEl.current.offsetHeight))
             setX(Math.min(Math.max(0, e.pageX - offSetX), document.body.clientWidth - folderEl.current.offsetWidth))
         }
@@ -107,9 +106,7 @@ export default function Folder() {
     }
 
     return (
-        <div
-            draggable="true"
-            ref={folderEl}
+        <div ref={folderEl}
             className={className}
             style={{ "position": position, "top": y, "left": x, "zIndex": z }}>
             <div className="folder-image-container">
