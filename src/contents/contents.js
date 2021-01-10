@@ -13,13 +13,13 @@ export default function Contents({ display, setDisplay, contentsContainerEl, id 
     const [offSetY, setOffSetY] = useState(0)
     const [x, setX] = useState(300)
     const [y, setY] = useState(300)
-    const [z, setZ] = useState("0")
+    const [z, setZ] = useState("1")
     const [className, setClassName] = useState("droppable contents")
     const [width, setWidth] = useState(300)
     const [height, setHeight] = useState(300)
 
     useEffect(() => {
-        // console.log(display)
+        console.log(display)
         const contents = contentsEl.current
         const width = contents.clientWidth
         const height = contents.clientHeight
@@ -62,7 +62,7 @@ export default function Contents({ display, setDisplay, contentsContainerEl, id 
         e.preventDefault()
         setOffSetX(0)
         setOffSetY(0)
-        setZ("0")
+        setZ("1")
         setClassName("droppable contents")
         document.removeEventListener('mousemove', drag)
         document.removeEventListener('mouseup', stop)

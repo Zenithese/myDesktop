@@ -22,23 +22,35 @@ export default function Folder() {
     const [display, setDisplay] = useState("none")
     const folderEl = useRef(null)
     const contentsContainerEl = useRef(null)
-    const id = Math.random()
+    const id = String(Math.random()).slice(2)
 
     useEffect(() => {
         if (moving) {
-            // setOffSetX(event.pageX - event.target.getBoundingClientRect().left + 5)
-            // setOffSetY(event.pageY - event.target.getBoundingClientRect().top + 5)
-            // document.querySelector(".App").appendChild(folderEl.current)
+            
         } else if (nest) {
             if (!transferable) {
                 setX(originalPos[0])
                 setY(originalPos[1])
             }
-            if (nest.className.split(" ")[1] === "droppable" || nest.className === "App") {
-                if (nest.className.split(" ")[2] === "contents") {
+            const nestClassName = nest.className.split(" ")
+            if (nestClassName[1] === "droppable") {
+                if (nestClassName[2] === "contents") {
                     nest.appendChild(folderEl.current)
+                    nest.className = nest.className.slice(8)
+                    setPosition(null)
+                } else if (nestClassName[2] === "folder") {
+                    const id = `#c-${nest.id.slice(2)}`
+                    const contents = document.querySelector(id)
+                    const nestable = document.querySelector(".current")
+                    contents.appendChild(folderEl.current)
+                    nestable.className = nestable.className.slice(8)
                     setPosition(null)
                 }
+            } else if (nest.className === "App") {
+                console.log("append")
+                setTimeout(() => {
+                    nest.appendChild(folderEl.current)
+                }, 300);
             }
         }
     }, [moving])
@@ -64,18 +76,22 @@ export default function Folder() {
     const start = (e) => {
         setOriginalPos([x, y])
         setMoving(true)
-        setPosition("fixed")
         setClassName("folder")
         setZ("1000")
         setOffSetX(e.pageX - e.target.getBoundingClientRect().left + 5)
         setOffSetY(e.pageY - e.target.getBoundingClientRect().top + 5)
-        setTimeout(() => {
-            document.querySelector(".App").appendChild(folderEl.current)
-        }, 300);
+        console.log(contentsContainerEl.current)
+        // setTimeout(() => {
+        //     document.querySelector(".App").appendChild(folderEl.current)
+        // }, 300);
     }
 
     const drag = (e) => {
         e.preventDefault()
+        setPosition("fixed")
+        if (!position) {
+            document.querySelector(".App").appendChild(folderEl.current)
+        }
         if (folderEl.current) {
             setY(Math.min(Math.max(0, e.pageY - offSetY), document.body.clientHeight - folderEl.current.offsetHeight))
             setX(Math.min(Math.max(0, e.pageX - offSetX), document.body.clientWidth - folderEl.current.offsetWidth))
@@ -95,6 +111,7 @@ export default function Folder() {
     }
 
     const handleDoubleClick = () => {
+        console.log("dbl")
         setDisplay("grid")
         document.querySelector(".App").appendChild(contentsContainerEl.current)
     }
@@ -107,7 +124,7 @@ export default function Folder() {
             folder.hidden = true
             let nestable = document.elementFromPoint(e.clientX, e.clientY)
             if (nestable = nestable.closest(".droppable")) {
-                if (nestable.id === folder.id) {
+                if (nestable.id.slice(2) === folder.id.slice(2)) {
                     setTransferable(false)
                     setNest(document.querySelector(".App"))
                 } else if (nestable.className.slice(0, 7) !== "current") {
@@ -123,7 +140,7 @@ export default function Folder() {
     }
 
     return (
-        <div id={`${id}`}
+        <div id={`f-${id}`}
             ref={folderEl}
             className={className}
             style={{ "position": position, "top": y, "left": x, "zIndex": z }}>
@@ -144,7 +161,7 @@ export default function Folder() {
                     onChange={(e) => handleInput(e)} />
             </div>
             <Contents 
-                id={`${id}`}
+                id={`c-${id}`}
                 contentsContainerEl={contentsContainerEl}
                 display={display} 
                 setDisplay={setDisplay}
