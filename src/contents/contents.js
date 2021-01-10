@@ -19,7 +19,6 @@ export default function Contents({ display, setDisplay, contentsContainerEl, id,
     const [height, setHeight] = useState(300)
 
     useEffect(() => {
-        console.log(display)
         const contents = contentsEl.current
         const width = contents.clientWidth
         const height = contents.clientHeight
@@ -72,13 +71,11 @@ export default function Contents({ display, setDisplay, contentsContainerEl, id,
         setDisplay("none")
     }
 
-    const renderChildren = () => {
-        const render = []
-        for (const child in children) {
-            render.push(<Folder children={folders[child].children} />)
-        }
-        return render
-    }
+    const renderChildren = children.map(child => {
+        return (
+            <Folder children={folders[child].children} parent={folders[child].parent} key={child} />
+        )
+    })
 
     return (
         <div ref={contentsContainerEl}
@@ -96,7 +93,7 @@ export default function Contents({ display, setDisplay, contentsContainerEl, id,
                 className={className}
                 style={{ "gridTemplateColumns": gridCol, "gridTemplateRows": gridRow, "width": `${width}px`, "height": `${height - 15}px` }}
                 onMouseUp={() => setUpdate(!update)}>
-                {renderChildren()}
+                {renderChildren}
             </div>
         </div>
     )

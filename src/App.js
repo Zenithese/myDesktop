@@ -63,7 +63,7 @@ function App() {
   const renderFolders = () => {
     const render = []
     for (const folder in folders) {
-      if (folders[folder].parent === null) render.push(<Folder children={folders[folder].children} folders={folders} />)
+      if (folders[folder].parent === null) render.push(<Folder children={folders[folder].children} folders={folders} parent={null} key={folder}/>)
     }
     return render
   }

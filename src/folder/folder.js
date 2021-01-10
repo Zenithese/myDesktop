@@ -3,13 +3,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import ContentEditable from 'react-contenteditable';
 import Contents from '../contents/contents';
 
-export default function Folder({ children, folders }) {
+export default function Folder({ children, folders, parent }) {
 
     const [value, setValue] = useState("New Folder")
     const [moving, setMoving] = useState(false)
     const [offSetX, setOffSetX] = useState(0)
     const [offSetY, setOffSetY] = useState(0)
-    const [position, setPosition] = useState("grid")
+    const [position, setPosition] = useState(parent ? "grid" : "fixed")
     const [x, setX] = useState(0)
     const [y, setY] = useState(0)
     const [z, setZ] = useState("0")
