@@ -10,6 +10,31 @@ function App() {
   const [directionReveal, setDirectionReveal] = useState("right-reveal")
   const [parentClassName, setParentClassName] = useState("new-location")
   const [display, setDisplay] = useState("none")
+  const [folders, setFolders] = useState(
+    {
+      0: {
+        'top': '300px',
+        'left': '570px',
+        'title': 'Aquarius',
+        'parent': null,
+        'children': []
+      },
+      1: {
+        'top': '50px',
+        'left': '50px',
+        'title': 'origin',
+        'parent': null,
+        'children': [2]
+      },
+      2: {
+        'top': '50px',
+        'left': '150px',
+        'title': 'sipping on gin n juice',
+        'parent': 1,
+        'children': []
+      },
+    }
+  )
 
   const rightClick = (e) => {
     e.preventDefault()
@@ -35,6 +60,14 @@ function App() {
     setParentClassName("new-location")
   }, [parentClassName])
 
+  const renderFolders = () => {
+    const render = []
+    for (const folder in folders) {
+      if (folders[folder].parent === null) render.push(<Folder children={folders[folder].children} folders={folders} />)
+    }
+    return render
+  }
+
   return (
     <div className="App"
       onClick={(e) => closeContext(e)}
@@ -51,9 +84,7 @@ function App() {
           },
         ]} />
       </div>
-      <Folder />
-      <Folder />
-      <Folder />
+      {renderFolders()}
     </div>
   );
 }

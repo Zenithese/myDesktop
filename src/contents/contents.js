@@ -1,9 +1,9 @@
 import './contents.css'
 import React, { useState, useEffect, useRef } from 'react';
 import ContentsBorder from './contentsBorder'
-// import Folder from '../folder/folder';
+import Folder from '../folder/folder';
 
-export default function Contents({ display, setDisplay, contentsContainerEl, id }) {
+export default function Contents({ display, setDisplay, contentsContainerEl, id, children, folders }) {
 
     const contentsEl = useRef(null)
     const [gridRow, setGridRow] = useState("")
@@ -72,6 +72,14 @@ export default function Contents({ display, setDisplay, contentsContainerEl, id 
         setDisplay("none")
     }
 
+    const renderChildren = () => {
+        const render = []
+        for (const child in children) {
+            render.push(<Folder children={folders[child].children} />)
+        }
+        return render
+    }
+
     return (
         <div ref={contentsContainerEl}
             className="contents-container"
@@ -87,7 +95,9 @@ export default function Contents({ display, setDisplay, contentsContainerEl, id 
                 ref={contentsEl}
                 className={className}
                 style={{ "gridTemplateColumns": gridCol, "gridTemplateRows": gridRow, "width": `${width}px`, "height": `${height - 15}px` }}
-                onMouseUp={() => setUpdate(!update)}></div>
+                onMouseUp={() => setUpdate(!update)}>
+                {renderChildren()}
+            </div>
         </div>
     )
 }
