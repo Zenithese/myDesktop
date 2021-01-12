@@ -1,7 +1,7 @@
 import './contents.css'
 import React, { useState, useEffect } from 'react';
 
-export default function ContentsBorder({ width, setWidth, height, setHeight, setX, setY }) {
+export default function ContentsBorder({ id, width, setWidth, height, setHeight, setX, setY, folders, setFolders }) {
 
     const [section, setSection] = useState(null)
     const [startX, setStartX] = useState(null)
@@ -10,6 +10,17 @@ export default function ContentsBorder({ width, setWidth, height, setHeight, set
     const [startHeight, setStartHeight] = useState(null)
     const [offSetX, setOffSetX] = useState(0)
     const [offSetY, setOffSetY] = useState(0)
+    const [finished, setFinished] = useState(false)
+
+    useEffect(() => {
+        if (finished) {
+            const temp = { ...folders }
+            temp[id.slice(2)].contentWidth = width
+            temp[id.slice(2)].contentHeight = height
+            setFolders(temp)
+            setFinished(false)
+        }
+    })
 
     useEffect(() => {
         if (section) {
@@ -31,31 +42,31 @@ export default function ContentsBorder({ width, setWidth, height, setHeight, set
     const drag = (e) => {
         e.preventDefault()
         if (section === "side-top") {
-            setHeight(startHeight - e.pageY + startY)
-            setY(e.pageY - offSetY)
+            setHeight(Math.max(startHeight - e.pageY + startY, 150))
+            setY(Math.min(e.pageY - offSetY, startY + startHeight - offSetY - 150))
         } else if (section === "side-left") {
-            setWidth(startWidth - e.pageX + startX)
-            setX(e.pageX - offSetX)
+            setWidth(Math.max(startWidth - e.pageX + startX, 150))
+            setX(Math.min(e.pageX - offSetX, startX + startWidth - offSetX - 150))
         } else if (section === "side-right") {
-            setWidth(startWidth + e.pageX - startX)
+            setWidth(Math.max(startWidth + e.pageX - startX, 150))
         } else if (section === "side-bottom") {
-            setHeight(startHeight + e.pageY - startY)
+            setHeight(Math.max(startHeight + e.pageY - startY, 150))
         } else if (section === "corner-1") {
-            setWidth(startWidth - e.pageX + startX)
-            setHeight(startHeight - e.pageY + startY)
-            setX(e.pageX - offSetX)
-            setY(e.pageY - offSetY)
+            setWidth(Math.max(startWidth - e.pageX + startX, 150))
+            setHeight(Math.max(startHeight - e.pageY + startY, 150))
+            setX(Math.min(e.pageX - offSetX, startX + startWidth - offSetX - 150))
+            setY(Math.min(e.pageY - offSetY, startY + startHeight - offSetY - 150))
         } else if (section === "corner-2") {
-            setWidth(startWidth + e.pageX - startX)
-            setHeight(startHeight - e.pageY + startY)
-            setY(e.pageY - offSetY)
+            setWidth(Math.max(startWidth + e.pageX - startX, 150))
+            setHeight(Math.max(startHeight - e.pageY + startY, 150))
+            setY(Math.min(e.pageY - offSetY, startY + startHeight - offSetY - 150))
         } else if (section === "corner-3") {
-            setWidth(startWidth - e.pageX + startX)
-            setHeight(startHeight + e.pageY - startY)
-            setX(e.pageX - offSetX)
+            setWidth(Math.max(startWidth - e.pageX + startX, 150))
+            setHeight(Math.max(startHeight + e.pageY - startY, 150))
+            setX(Math.min(e.pageX - offSetX, startX + startWidth - offSetX - 150))
         } else if (section === "corner-4") {
-            setWidth(startWidth + e.pageX - startX)
-            setHeight(startHeight + e.pageY - startY)
+            setWidth(Math.max(startWidth + e.pageX - startX, 150))
+            setHeight(Math.max(startHeight + e.pageY - startY, 150))
         }
     }
 
@@ -64,6 +75,7 @@ export default function ContentsBorder({ width, setWidth, height, setHeight, set
         document.removeEventListener('mousemove', drag)
         document.removeEventListener('mouseup', stop)
         setSection(null)
+        setFinished(true)
     }
 
     return (

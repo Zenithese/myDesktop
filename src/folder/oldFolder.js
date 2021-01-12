@@ -1,8 +1,9 @@
 import './folder.css';
 import React, { useState, useEffect, useRef } from 'react';
 import ContentEditable from 'react-contenteditable';
+import Contents from '../contents/contents';
 
-export default function Folder({ left, top, title, parent, id, folders, setFolders, dimensions }) {
+export default function Folder({ left, top, title, children, folders, parent, id }) {
 
     const [value, setValue] = useState(title)
     const [moving, setMoving] = useState(false)
@@ -13,38 +14,46 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
     const [y, setY] = useState(top)
     const [z, setZ] = useState("0")
     const [className, setClassName] = useState("droppable folder")
-    const [nest, setNest] = useState(null)
+    const [nest, setNest] = useState(document.querySelector(".App"))
     const [originalPos, setOriginalPos] = useState([0, 0])
+    const [transferable, setTransferable] = useState(true)
+    const [gridRowStart, setGridRowStart] = useState("auto")
+    const [gridColStart, setGridColStart] = useState("auto")
+    const [display, setDisplay] = useState("none")
     const folderEl = useRef(null)
-    
+    const contentsContainerEl = useRef(null)
+
     useEffect(() => {
-        let mounted = true
-        if (!moving && nest && mounted) {
-            if (nest.id.slice(2) === folderEl.current.id.slice(2)) {
+        if (moving) {
+
+        } else if (nest) {
+            if (!transferable) {
                 setX(originalPos[0])
                 setY(originalPos[1])
-                return
             }
             const nestClassName = nest.className.split(" ")
-            const temp = { ...folders }
-            if (temp[id].parent) temp[temp[id].parent].children = temp[temp[id].parent].children.filter(folderId => folderId !== id)
             if (nestClassName[1] === "droppable") {
-                temp[nest.id.slice(2)].children.push(Number(id))
-                temp[id].parent = Number(nest.id.slice(2))
-                setPosition(null)
-                setFolders(temp)
-                nest.className = nest.className.slice(8)
+                if (nestClassName[2] === "contents") {
+                    nest.appendChild(folderEl.current)
+                    nest.className = nest.className.slice(8)
+                    setPosition(null)
+                } else if (nestClassName[2] === "folder") {
+                    const id = `#c-${nest.id.slice(2)}`
+                    const contents = document.querySelector(id)
+                    const nestable = document.querySelector(".current")
+                    contents.appendChild(folderEl.current)
+                    nestable.className = nestable.className.slice(8)
+                    setPosition(null)
+                }
             } else if (nest.className === "App") {
-                temp[id].parent = null
-                temp[id].top = y
-                temp[id].left = x
-                setFolders(temp)
+                setTimeout(() => {
+                    nest.appendChild(folderEl.current)
+                }, 300);
             }
-            return function cleanup() { mounted = false }
         }
     }, [moving])
 
-    useEffect (() => {
+    useEffect(() => {
         if (offSetY) {
             document.addEventListener('mousemove', drag)
             document.addEventListener('mouseup', stop)
@@ -55,11 +64,6 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
         if (position === null) {
             setY(nest.getBoundingClientRect().top)
             setX(nest.getBoundingClientRect().left + 3)
-            setPosition("grid")
-        } else if (position === "fixed") {
-            if (parent !== null) {
-                document.querySelector(".App").appendChild(folderEl.current)
-            }
         }
     }, [position])
 
@@ -69,16 +73,22 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
 
     const start = (e) => {
         setOriginalPos([x, y])
+        setMoving(true)
         setClassName("folder")
         setZ("1000")
-        setMoving(true)
         setOffSetX(e.pageX - e.target.getBoundingClientRect().left + 5)
         setOffSetY(e.pageY - e.target.getBoundingClientRect().top + 5)
+        // setTimeout(() => {
+        //     document.querySelector(".App").appendChild(folderEl.current)
+        // }, 300);
     }
 
     const drag = (e) => {
         e.preventDefault()
-        if (position !== "fixed") setPosition("fixed")
+        setPosition("fixed")
+        if (!position) {
+            document.querySelector(".App").appendChild(folderEl.current)
+        }
         if (folderEl.current) {
             setY(Math.min(Math.max(0, e.pageY - offSetY), document.body.clientHeight - folderEl.current.offsetHeight))
             setX(Math.min(Math.max(0, e.pageX - offSetX), document.body.clientWidth - folderEl.current.offsetWidth))
@@ -88,12 +98,9 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
 
     const stop = (e) => {
         e.preventDefault()
-        if (parent !== null && document.getElementById(`c-${parent}`) && e.target.parentElement.parentElement.parentElement.id === "App") {
-            document.getElementById(`c-${parent}`).appendChild(folderEl.current)
-        } 
-        setMoving(false)
         setOffSetX(0)
         setOffSetY(0)
+        setMoving(false)
         setZ("0")
         setClassName("droppable folder")
         document.removeEventListener('mousemove', drag)
@@ -101,19 +108,22 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
     }
 
     const handleDoubleClick = () => {
-        const temp = { ...folders }
-        temp[id].open = true
-        setFolders(temp)
+        setDisplay("grid")
+        document.querySelector(".App").appendChild(contentsContainerEl.current)
     }
 
     const nestFolder = (e) => {
         e.preventDefault()
         const folder = e.target.parentElement ? e.target.parentElement.parentElement : null;
+        if (!transferable) setTransferable(true)
         if (folder) {
             folder.hidden = true
             let nestable = document.elementFromPoint(e.clientX, e.clientY)
             if (nestable = nestable.closest(".droppable")) {
-                 if (nestable.className.slice(0, 7) !== "current") {
+                if (nestable.id.slice(2) === folder.id.slice(2)) {
+                    setTransferable(false)
+                    setNest(document.querySelector(".App"))
+                } else if (nestable.className.slice(0, 7) !== "current") {
                     nestable.className = "current " + nestable.className
                     setNest(nestable)
                 }
@@ -129,14 +139,13 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
         <div id={`f-${id}`}
             ref={folderEl}
             className={className}
-            style={{ "position": position, "top": Math.min(y, dimensions.height - 94), "left": Math.min(x, dimensions.width - 94), "zIndex": z }}>
+            style={{ "position": position, "top": y, "left": x, "zIndex": z }}>
             <div className="folder-image-container">
-                <img draggable="false"
-                    id={id}
+                <img
                     className="folder-image"
-                    alt="" 
+                    alt=""
                     src="http://icon-park.com/imagefiles/folder_icon_yellow.png"
-                    onMouseDown={(e) => start(e)} 
+                    onMouseDown={(e) => start(e)}
                     onDoubleClick={() => handleDoubleClick()} />
             </div>
             <div className="folder-name-container" >
@@ -147,35 +156,14 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
                     className="content-editable"
                     onChange={(e) => handleInput(e)} />
             </div>
-            {/* <Contents 
+            <Contents
                 id={`c-${id}`}
                 contentsContainerEl={contentsContainerEl}
-                display={display} 
+                display={display}
                 setDisplay={setDisplay}
                 setZ={setZ}
                 children={children}
-                folders={folders}
-                setFolders={setFolders} /> */}
+                folders={folders} />
         </div>
     )
 }
-
-// function MyComponent() {
-//     const [dimensions, setDimensions] = useState({
-//         height: window.innerHeight,
-//         width: window.innerWidth
-//     })
-//     useEffect(() => {
-//         function handleResize() {
-//             setDimensions({
-//                 height: window.innerHeight,
-//                 width: window.innerWidth
-//             })
-//         }
-//         window.addEventListener('resize', handleResize)
-//         return _ => {
-//             window.removeEventListener('resize', handleResize)
-//         }
-//     })
-//     return <div></div>
-// }

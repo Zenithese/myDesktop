@@ -1,7 +1,7 @@
 import './context_menu.css'
 import {useState, useEffect} from 'react';
 
-export default function ContextMenu({ array, parentClassName, directionReveal }) {
+export default function ContextMenu({ array, parentClassName, directionReveal, folders, setFolders }) {
 
     const [openContexts, setOpenContexts] = useState([]);
     const [update, setUpdate] = useState(true);
@@ -11,8 +11,32 @@ export default function ContextMenu({ array, parentClassName, directionReveal })
         setOpenContexts(oldArray => [...oldArray, "closed"])
     }, [num])
 
+    const handleClick = (e) => {
+        if (e.target.innerHTML === "New Folder") {
+            const temp = { ...folders }
+            temp[Math.floor(Math.random() * 1000000000000000)] = {
+                'top': e.pageY,
+                'left': e.pageX,
+                'title': 'New Folder',
+                'parent': null,
+                'children': [],
+                'open': false,
+                'contentX': null,
+                'contentY': null,
+                'contentWidth': 300,
+                'contentHeight': 300
+            }
+            setFolders(temp)
+        }
+        if (e.target.innerHTML === "Delete Folder") {
+            const temp = { ...folders }
+            delete temp[e.target.id]
+            setFolders(temp)
+        }
+    }
+
     const list = array.map((item, i) => {
-        if (item.type === "li") return <div className="contextmenu" key={i}>{item.text}</div>
+        if (item.type === "li") return <div className="contextmenu" id={item.folder} onClick={(e) => handleClick(e)} key={i}>{item.text}</div>
         if (item.type === "li with context") {
             num++
             return (

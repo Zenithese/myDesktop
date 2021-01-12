@@ -1,6 +1,7 @@
 .context-container {
   display: flex;
   flex-direction: row;
+  z-index: 10000;
 }
 
 .contextmenu {

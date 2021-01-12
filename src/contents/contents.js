@@ -3,20 +3,20 @@ import React, { useState, useEffect, useRef } from 'react';
 import ContentsBorder from './contentsBorder'
 import Folder from '../folder/folder';
 
-export default function Contents({ display, setDisplay, contentsContainerEl, id, children, folders }) {
+export default function Contents({ id, children, folders, setFolders, contentX, contentY, contentWidth, contentHeight, dimensions }) {
 
     const contentsEl = useRef(null)
+    const contentsContainerEl = useRef(null)
     const [gridRow, setGridRow] = useState("")
     const [gridCol, setGridCol] = useState("")
-    const [update, setUpdate] = useState(false)
     const [offSetX, setOffSetX] = useState(0)
     const [offSetY, setOffSetY] = useState(0)
-    const [x, setX] = useState(300)
-    const [y, setY] = useState(300)
-    const [z, setZ] = useState("1")
+    const [x, setX] = useState(contentX)
+    const [y, setY] = useState(contentY)
     const [className, setClassName] = useState("droppable contents")
-    const [width, setWidth] = useState(300)
-    const [height, setHeight] = useState(300)
+    const [width, setWidth] = useState(contentWidth)
+    const [height, setHeight] = useState(contentHeight)
+    const [dropped, setdropped] = useState(false)
 
     useEffect(() => {
         const contents = contentsEl.current
@@ -40,10 +40,19 @@ export default function Contents({ display, setDisplay, contentsContainerEl, id,
         }
     }, [offSetY])
 
+    useEffect(() => {
+        if (dropped) {
+            const temp = { ...folders }
+            temp[id.slice(2)].contentX = x
+            temp[id.slice(2)].contentY = y
+            setFolders(temp)
+            setdropped(false)
+        }
+    })
+
     const start = (e) => {
         if (e.target.className === "close-button") return
         setClassName("contents")
-        setZ("1000")
         document.querySelector(".App").appendChild(contentsContainerEl.current)
         setOffSetX(e.pageX - e.target.getBoundingClientRect().left)
         setOffSetY(e.pageY - e.target.getBoundingClientRect().top)
@@ -61,28 +70,54 @@ export default function Contents({ display, setDisplay, contentsContainerEl, id,
         e.preventDefault()
         setOffSetX(0)
         setOffSetY(0)
-        setZ("1")
         setClassName("droppable contents")
+        setdropped(true)
         document.removeEventListener('mousemove', drag)
         document.removeEventListener('mouseup', stop)
     }
 
     const handleClose = () => {
-        setDisplay("none")
+        const temp = { ...folders }
+        temp[id.slice(2)].open = false
+        setFolders(temp)
+    }
+
+    const handleMouseDown = (e) => {
+        if (e.target.className === "close-button" || e.target.className === "folder-image") return
+        document.querySelector(".App").appendChild(contentsContainerEl.current)
     }
 
     const renderChildren = children.map(child => {
         return (
-            <Folder children={folders[child].children} parent={folders[child].parent} key={child} />
+            <Folder 
+                id={child}
+                top={folders[child].top}
+                left={folders[child].left} 
+                title={folders[child].title} 
+                children={folders[child].children} 
+                parent={folders[child].parent} 
+                folders={folders}
+                setFolders={setFolders}
+                dimensions={dimensions}
+                key={child} />
         )
     })
 
     return (
         <div ref={contentsContainerEl}
             className="contents-container"
-            style={{
-                "display": display, "top": y, "left": x, "zIndex": z, "width": `${width}px`, "height": `${height}px` }}>
-            <ContentsBorder width={width} setWidth={setWidth} height={height} setHeight={setHeight} setX={setX} setY={setY} />
+            // onMouseDown={(e) => handleMouseDown(e)}
+            style={{ "display": "grid", "top": Math.min(y, dimensions.height - height - 5), "left": Math.min(x, dimensions.width - width - 5), "width": `${width}px`, "height": `${height}px` }}>
+            <ContentsBorder 
+                id={id}
+                width={width} 
+                setWidth={setWidth} 
+                height={height} 
+                setHeight={setHeight} 
+                setX={setX} 
+                setY={setY} 
+                folders={folders}
+                setFolders={setFolders} />
             <div className="contents-handle"
                 onMouseDown={(e) => start(e)}>
                 <div className="close-button" onClick={() => handleClose()}>x</div>
@@ -91,8 +126,7 @@ export default function Contents({ display, setDisplay, contentsContainerEl, id,
                 id={id}
                 ref={contentsEl}
                 className={className}
-                style={{ "gridTemplateColumns": gridCol, "gridTemplateRows": gridRow, "width": `${width}px`, "height": `${height - 15}px` }}
-                onMouseUp={() => setUpdate(!update)}>
+                style={{ "gridTemplateColumns": gridCol, "gridTemplateRows": gridRow, "width": `${width}px`, "height": `${height - 15}px` }}>
                 {renderChildren}
             </div>
         </div>

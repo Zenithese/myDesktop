@@ -2,6 +2,7 @@
     width: 300px;
     background-color: gray;
     position: fixed;
+    z-index: 1;
 }
 
 .contents {
