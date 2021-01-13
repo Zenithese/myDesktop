@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import ContentsBorder from './contentsBorder'
 import Folder from '../folder/folder';
 
-export default function Contents({ id, children, folders, setFolders, contentX, contentY, contentWidth, contentHeight, dimensions }) {
+export default function Contents({ id, children, folders, setFolders, contentX, contentY, contentWidth, contentHeight, dimensions, openedLatest }) {
 
     const contentsEl = useRef(null)
     const contentsContainerEl = useRef(null)
@@ -17,6 +17,12 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
     const [width, setWidth] = useState(contentWidth)
     const [height, setHeight] = useState(contentHeight)
     const [dropped, setdropped] = useState(false)
+
+    useEffect(() => {
+        if (id.slice(2) === openedLatest) {
+            document.querySelector(".App").appendChild(contentsContainerEl.current)
+        }
+    }, [openedLatest, id])
 
     useEffect(() => {
         const contents = contentsEl.current
@@ -106,7 +112,7 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
     return (
         <div ref={contentsContainerEl}
             className="contents-container"
-            // onMouseDown={(e) => handleMouseDown(e)}
+            onMouseDown={(e) => handleMouseDown(e)}
             style={{ "display": "grid", "top": Math.min(y, dimensions.height - height - 5), "left": Math.min(x, dimensions.width - width - 5), "width": `${width}px`, "height": `${height}px` }}>
             <ContentsBorder 
                 id={id}

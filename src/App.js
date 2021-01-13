@@ -2,7 +2,7 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import ContextMenu from './context_menu/contextmenu';
 import Folder from './folder/folder';
-import Contents from './contents/contents';
+import Contents from './contents/contents'
 
 function App() {
 
@@ -11,6 +11,7 @@ function App() {
   const [directionReveal, setDirectionReveal] = useState("right-reveal")
   const [parentClassName, setParentClassName] = useState("new-location")
   const [display, setDisplay] = useState("none")
+  const [openedLatest, setOpenedLatest] = useState(null)
   const [contexts, setContexts] = useState(
     [
       {
@@ -69,7 +70,6 @@ function App() {
   })
 
   useEffect(() => {
-    console.log("window")
     function handleResize() {
       setDimensions({
         height: window.innerHeight,
@@ -81,6 +81,12 @@ function App() {
       window.removeEventListener('resize', handleResize)
     }
   })
+
+  // useEffect(() => {
+  //   if (openedLatest) {
+
+  //   }
+  // }, [openedLatest])
 
   const rightClick = (e) => {
     e.preventDefault()
@@ -125,38 +131,47 @@ function App() {
   }, [parentClassName])
 
   const renderFolders = () => {
-    let contentsInitialRenderPostionOffset = 0
-    const render = []
+    const renderFolders = []
+    const renderContents = []
     for (const folder in folders) {
       if (folders[folder].parent === null) {
-        render.push(
-          <Folder 
+        renderFolders.push(
+          <Folder
             id={folder}
-            top={folders[folder].top} 
-            left={folders[folder].left} 
-            title={folders[folder].title} 
-            folders={folders} 
+            top={folders[folder].top}
+            left={folders[folder].left}
+            title={folders[folder].title}
+            folders={folders}
             setFolders={setFolders}
             parent={null}
-            dimensions={dimensions} 
-            key={folder}/>
+            dimensions={dimensions}
+            openedLatest={openedLatest}
+            setOpenedLatest={setOpenedLatest}
+            key={folder} 
+          />
         )
       }
       if (folders[folder].open) {
-        render.push(<Contents
-          id={`c-${folder}`}
-          children={folders[folder].children} 
-          folders={folders}
-          setFolders={setFolders} 
-          contentX={folders[folder].contentX === null ? 300 + (contentsInitialRenderPostionOffset = contentsInitialRenderPostionOffset + 10) : folders[folder].contentX}
-          contentY={folders[folder].contentY === null ? 300 + contentsInitialRenderPostionOffset : folders[folder].contentY} 
-          contentWidth={folders[folder].contentWidth}
-          contentHeight={folders[folder].contentHeight} 
-          dimensions={dimensions}
-          key={`c-${folder}`} />)
+        renderContents.push(
+          <Contents
+            id={`c-${folder}`}
+            children={folders[folder].children}
+            folders={folders}
+            setFolders={setFolders}
+            contentX={folders[folder].contentX === null ? folders[folder].left : folders[folder].contentX}
+            contentY={folders[folder].contentY === null ? folders[folder].top + 110 : folders[folder].contentY}
+            // contentX={folders[folder].contentX === null ? 300 + (renderContents.length * 15) : folders[folder].contentX}
+            // contentY={folders[folder].contentY === null ? 300 - (renderContents.length * 15) : folders[folder].contentY}
+            contentWidth={folders[folder].contentWidth}
+            contentHeight={folders[folder].contentHeight}
+            dimensions={dimensions}
+            openedLatest={openedLatest}
+            key={`c-${folder}`}
+          />
+        )
       }
     }
-    return render
+    return [...renderFolders, ...renderContents]
   }
 
   return (
@@ -165,12 +180,13 @@ function App() {
       onClick={(e) => closeContext(e)}
       onContextMenu={(e) => rightClick(e)}>
       <div style={{ "display": display, "position": "fixed", "top": top, "left": left, "flexDirection": "row-reverse", "zIndex": "10000" }}>
-        <ContextMenu 
-          parentClassName={parentClassName} 
-          directionReveal={directionReveal} 
+        <ContextMenu
+          parentClassName={parentClassName}
+          directionReveal={directionReveal}
           folders={folders}
           setFolders={setFolders}
-          array={contexts} />
+          array={contexts} 
+        />
       </div>
       {renderFolders()}
     </div>

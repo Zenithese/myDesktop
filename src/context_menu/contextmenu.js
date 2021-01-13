@@ -29,9 +29,22 @@ export default function ContextMenu({ array, parentClassName, directionReveal, f
             setFolders(temp)
         }
         if (e.target.innerHTML === "Delete Folder") {
-            const temp = { ...folders }
-            delete temp[e.target.id]
-            setFolders(temp)
+            const temp = { ...folders };
+            (function recursiveDelete(id = e.target.id, inital = true) {
+                temp[id].children.forEach(id => {
+                    if (temp[id].children) {
+                        recursiveDelete(id, false)
+                    } else {
+                        delete temp[id]
+                    }
+                })
+                if (inital) {
+                    if (temp[id].parent) temp[temp[id].parent].children = temp[temp[id].parent].children.filter(folderId => folderId !== Number(id))
+                    delete temp[id]
+                    setFolders(temp)
+                } 
+                delete temp[id]
+            })();
         }
     }
 

@@ -2,7 +2,7 @@ import './folder.css';
 import React, { useState, useEffect, useRef } from 'react';
 import ContentEditable from 'react-contenteditable';
 
-export default function Folder({ left, top, title, parent, id, folders, setFolders, dimensions }) {
+export default function Folder({ left, top, title, parent, id, folders, setFolders, dimensions, setOpenedLatest }) {
 
     const [value, setValue] = useState(title)
     const [moving, setMoving] = useState(false)
@@ -104,6 +104,7 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
         const temp = { ...folders }
         temp[id].open = true
         setFolders(temp)
+        setOpenedLatest(id)
     }
 
     const nestFolder = (e) => {
@@ -147,35 +148,6 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
                     className="content-editable"
                     onChange={(e) => handleInput(e)} />
             </div>
-            {/* <Contents 
-                id={`c-${id}`}
-                contentsContainerEl={contentsContainerEl}
-                display={display} 
-                setDisplay={setDisplay}
-                setZ={setZ}
-                children={children}
-                folders={folders}
-                setFolders={setFolders} /> */}
         </div>
     )
 }
-
-// function MyComponent() {
-//     const [dimensions, setDimensions] = useState({
-//         height: window.innerHeight,
-//         width: window.innerWidth
-//     })
-//     useEffect(() => {
-//         function handleResize() {
-//             setDimensions({
-//                 height: window.innerHeight,
-//                 width: window.innerWidth
-//             })
-//         }
-//         window.addEventListener('resize', handleResize)
-//         return _ => {
-//             window.removeEventListener('resize', handleResize)
-//         }
-//     })
-//     return <div></div>
-// }
