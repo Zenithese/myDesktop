@@ -58,7 +58,6 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
       setPosition("grid")
     } else if (position === "fixed") {
       if (parent !== null) {
-        console.log("yo")
         document.querySelector(".App").appendChild(folderEl.current)
       }
     }

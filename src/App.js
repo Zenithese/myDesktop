@@ -95,7 +95,7 @@ function App() {
         {
           type: "li",
           text: "New Folder",
-          id: e.target.id
+          id: `nf-${e.target.id}`
         },
         {
           type: "li",

@@ -15,7 +15,7 @@ export default function ContextMenu({ array, parentClassName, directionReveal, f
         if (e.target.innerHTML === "New Folder") {
             const temp = { ...folders }
             const id = Math.floor(Math.random() * 1000000000000000)
-            if (e.target.id === "App") {
+            if (e.target.id.slice(3) === "App") {
                 temp[id] = {
                     'top': e.pageY,
                     'left': e.pageX,
@@ -29,7 +29,7 @@ export default function ContextMenu({ array, parentClassName, directionReveal, f
                     'contentHeight': 300
                 }
             } else {
-                const parent = Number(e.target.id.slice(2))
+                const parent = Number(e.target.id.slice(5))
                 temp[id] = {
                     'top': e.pageY,
                     'left': e.pageX,
