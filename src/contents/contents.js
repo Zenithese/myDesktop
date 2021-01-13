@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import ContentsBorder from './contentsBorder'
 import Folder from '../folder/folder';
 
-export default function Contents({ id, children, folders, setFolders, contentX, contentY, contentWidth, contentHeight, dimensions, openedLatest }) {
+export default function Contents({ id, children, folders, setFolders, contentX, contentY, contentWidth, contentHeight, dimensions, openedLatest, setOpenedLatest }) {
 
     const contentsEl = useRef(null)
     const contentsContainerEl = useRef(null)
@@ -105,7 +105,10 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
                 folders={folders}
                 setFolders={setFolders}
                 dimensions={dimensions}
-                key={child} />
+                openedLatest={openedLatest}
+                setOpenedLatest={setOpenedLatest}
+                key={child} 
+            />
         )
     })
 

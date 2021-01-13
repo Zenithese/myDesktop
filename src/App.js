@@ -82,12 +82,6 @@ function App() {
     }
   })
 
-  // useEffect(() => {
-  //   if (openedLatest) {
-
-  //   }
-  // }, [openedLatest])
-
   const rightClick = (e) => {
     e.preventDefault()
     setDisplay("block")
@@ -158,14 +152,23 @@ function App() {
             children={folders[folder].children}
             folders={folders}
             setFolders={setFolders}
-            contentX={folders[folder].contentX === null ? folders[folder].left : folders[folder].contentX}
-            contentY={folders[folder].contentY === null ? folders[folder].top + 110 : folders[folder].contentY}
+            contentX={folders[folder].contentX === null ? 
+              folders[folder].left + folders[folder].contentWidth > dimensions.width ? 
+              Math.max(folders[folder].left - folders[folder].contentWidth + 94, 5)
+                : folders[folder].left : folders[folder].contentX }
+            contentY={folders[folder].contentY === null ? 
+              folders[folder].top + 110 + folders[folder].contentHeight > dimensions.height ?
+              Math.max(folders[folder].top - 20 - folders[folder].contentHeight, 5) 
+              : folders[folder].top + 110 : folders[folder].contentY}
             // contentX={folders[folder].contentX === null ? 300 + (renderContents.length * 15) : folders[folder].contentX}
             // contentY={folders[folder].contentY === null ? 300 - (renderContents.length * 15) : folders[folder].contentY}
+            // contentX={folders[folder].contentX === null ? Math.random() * dimensions.width : folders[folder].contentX}
+            // contentY={folders[folder].contentY === null ? Math.random() * dimensions.height : folders[folder].contentY}
             contentWidth={folders[folder].contentWidth}
             contentHeight={folders[folder].contentHeight}
             dimensions={dimensions}
             openedLatest={openedLatest}
+            setOpenedLatest={setOpenedLatest}
             key={`c-${folder}`}
           />
         )
