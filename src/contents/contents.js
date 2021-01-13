@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import ContentsBorder from './contentsBorder'
 import Folder from '../folder/folder';
 
-export default function Contents({ id, children, folders, setFolders, contentX, contentY, contentWidth, contentHeight, dimensions, openedLatest, setOpenedLatest }) {
+export default function Contents({ id, children, folders, setFolders, contentX, contentY, contentWidth, contentHeight, dimensions, setOpened }) {
 
     const contentsEl = useRef(null)
     const contentsContainerEl = useRef(null)
@@ -17,12 +17,6 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
     const [width, setWidth] = useState(contentWidth)
     const [height, setHeight] = useState(contentHeight)
     const [dropped, setdropped] = useState(false)
-
-    useEffect(() => {
-        if (id.slice(2) === openedLatest) {
-            document.querySelector(".App").appendChild(contentsContainerEl.current)
-        }
-    }, [openedLatest, id])
 
     useEffect(() => {
         const contents = contentsEl.current
@@ -84,8 +78,10 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
 
     const handleClose = () => {
         const temp = { ...folders }
-        temp[id.slice(2)].open = false
+        const _id = Number(id.slice(2))
+        temp[_id].open = false
         setFolders(temp)
+        setOpened(prev => prev.filter(id => id !== _id))
     }
 
     const handleMouseDown = (e) => {
@@ -105,8 +101,7 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
                 folders={folders}
                 setFolders={setFolders}
                 dimensions={dimensions}
-                openedLatest={openedLatest}
-                setOpenedLatest={setOpenedLatest}
+                setOpened={setOpened}
                 key={child} 
             />
         )

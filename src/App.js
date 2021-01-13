@@ -11,19 +11,8 @@ function App() {
   const [directionReveal, setDirectionReveal] = useState("right-reveal")
   const [parentClassName, setParentClassName] = useState("new-location")
   const [display, setDisplay] = useState("none")
-  const [openedLatest, setOpenedLatest] = useState(null)
-  const [contexts, setContexts] = useState(
-    [
-      {
-        type: "li",
-        text: "New Folder"
-      },
-      {
-        type: "li",
-        text: "Change Background"
-      },
-    ]
-  )
+  const [contexts, setContexts] = useState([])
+  const [opened, setOpened] = useState([])
   const [folders, setFolders] = useState(
     {
       30: {
@@ -99,13 +88,14 @@ function App() {
       setContexts([{
         type: "li",
         text: "Delete Folder",
-        folder: e.target.id
+        id: e.target.id
       }])
     } else {
       setContexts([
         {
           type: "li",
-          text: "New Folder"
+          text: "New Folder",
+          id: e.target.id
         },
         {
           type: "li",
@@ -126,7 +116,6 @@ function App() {
 
   const renderFolders = () => {
     const renderFolders = []
-    const renderContents = []
     for (const folder in folders) {
       if (folders[folder].parent === null) {
         renderFolders.push(
@@ -139,42 +128,39 @@ function App() {
             setFolders={setFolders}
             parent={null}
             dimensions={dimensions}
-            openedLatest={openedLatest}
-            setOpenedLatest={setOpenedLatest}
+            setOpened={setOpened}
             key={folder} 
           />
         )
       }
-      if (folders[folder].open) {
-        renderContents.push(
-          <Contents
-            id={`c-${folder}`}
-            children={folders[folder].children}
-            folders={folders}
-            setFolders={setFolders}
-            contentX={folders[folder].contentX === null ? 
-              folders[folder].left + folders[folder].contentWidth > dimensions.width ? 
-              Math.max(folders[folder].left - folders[folder].contentWidth + 94, 5)
-                : folders[folder].left : folders[folder].contentX }
-            contentY={folders[folder].contentY === null ? 
-              folders[folder].top + 110 + folders[folder].contentHeight > dimensions.height ?
-              Math.max(folders[folder].top - 20 - folders[folder].contentHeight, 5) 
-              : folders[folder].top + 110 : folders[folder].contentY}
-            // contentX={folders[folder].contentX === null ? 300 + (renderContents.length * 15) : folders[folder].contentX}
-            // contentY={folders[folder].contentY === null ? 300 - (renderContents.length * 15) : folders[folder].contentY}
-            // contentX={folders[folder].contentX === null ? Math.random() * dimensions.width : folders[folder].contentX}
-            // contentY={folders[folder].contentY === null ? Math.random() * dimensions.height : folders[folder].contentY}
-            contentWidth={folders[folder].contentWidth}
-            contentHeight={folders[folder].contentHeight}
-            dimensions={dimensions}
-            openedLatest={openedLatest}
-            setOpenedLatest={setOpenedLatest}
-            key={`c-${folder}`}
-          />
-        )
-      }
     }
-    return [...renderFolders, ...renderContents]
+    return renderFolders
+  }
+
+  const renderContents = () => {
+    return opened.map((folder, index) => {
+      return <Contents
+        id={`c-${folder}`}
+        children={folders[folder].children}
+        folders={folders}
+        setFolders={setFolders}
+        // contentX={folders[folder].contentX === null ?
+        //   folders[folder].left + folders[folder].contentWidth > dimensions.width ?
+        //     Math.max(folders[folder].left - folders[folder].contentWidth + 94, 5)
+        //     : folders[folder].left : folders[folder].contentX}
+        // contentY={folders[folder].contentY === null ?
+        //   folders[folder].top + 110 + folders[folder].contentHeight > dimensions.height ?
+        //     Math.max(folders[folder].top - 20 - folders[folder].contentHeight, 5)
+        //     : folders[folder].top + 110 : folders[folder].contentY}
+        contentX={folders[folder].contentX === null ? 300 + (index * 15) : folders[folder].contentX}
+        contentY={folders[folder].contentY === null ? 300 - (index * 15) : folders[folder].contentY}
+        contentWidth={folders[folder].contentWidth}
+        contentHeight={folders[folder].contentHeight}
+        dimensions={dimensions}
+        setOpened={setOpened}
+        key={`c-${folder}`}
+      />
+    })
   }
 
   return (
@@ -192,6 +178,7 @@ function App() {
         />
       </div>
       {renderFolders()}
+      {renderContents()}
     </div>
   );
 }

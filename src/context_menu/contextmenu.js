@@ -14,17 +14,35 @@ export default function ContextMenu({ array, parentClassName, directionReveal, f
     const handleClick = (e) => {
         if (e.target.innerHTML === "New Folder") {
             const temp = { ...folders }
-            temp[Math.floor(Math.random() * 1000000000000000)] = {
-                'top': e.pageY,
-                'left': e.pageX,
-                'title': 'New Folder',
-                'parent': null,
-                'children': [],
-                'open': false,
-                'contentX': null,
-                'contentY': null,
-                'contentWidth': 300,
-                'contentHeight': 300
+            const id = Math.floor(Math.random() * 1000000000000000)
+            if (e.target.id === "App") {
+                temp[id] = {
+                    'top': e.pageY,
+                    'left': e.pageX,
+                    'title': 'New Folder',
+                    'parent': null,
+                    'children': [],
+                    'open': false,
+                    'contentX': null,
+                    'contentY': null,
+                    'contentWidth': 300,
+                    'contentHeight': 300
+                }
+            } else {
+                const parent = Number(e.target.id.slice(2))
+                temp[id] = {
+                    'top': e.pageY,
+                    'left': e.pageX,
+                    'title': 'New Folder',
+                    'parent': parent,
+                    'children': [],
+                    'open': false,
+                    'contentX': null,
+                    'contentY': null,
+                    'contentWidth': 300,
+                    'contentHeight': 300
+                }
+                temp[parent].children.push(id)
             }
             setFolders(temp)
         }
@@ -49,20 +67,21 @@ export default function ContextMenu({ array, parentClassName, directionReveal, f
     }
 
     const list = array.map((item, i) => {
-        if (item.type === "li") return <div className="contextmenu" id={item.folder} onClick={(e) => handleClick(e)} key={i}>{item.text}</div>
+        if (item.type === "li") return <div className="contextmenu" id={item.id} onClick={(e) => handleClick(e)} key={i}>{item.text}</div>
         if (item.type === "li with context") {
             num++
             return (
                 <NestedContext 
-                text={item.text} 
-                array={item.array} 
-                parentClassName={parentClassName} 
-                key={i} openContexts={openContexts} 
-                setOpenContexts={setOpenContexts}
-                num={num - 1}
-                update={update}
-                setUpdate={setUpdate}
-                directionReveal={directionReveal} />
+                    text={item.text} 
+                    array={item.array} 
+                    parentClassName={parentClassName} 
+                    key={i} openContexts={openContexts} 
+                    setOpenContexts={setOpenContexts}
+                    num={num - 1}
+                    update={update}
+                    setUpdate={setUpdate}
+                    directionReveal={directionReveal} 
+                />
             )
         }
         return null
