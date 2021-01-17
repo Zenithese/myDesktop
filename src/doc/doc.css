@@ -1,4 +1,4 @@
-.folder {
+.file {
     text-align: center;
     border: 5px solid transparent;
     width: 84px;
@@ -6,29 +6,19 @@
     justify-self: center;
 }
 
-.folder-image {
-    max-width: 100%;
-}
-
-.folder-input {
-    background-color: transparent; 
-    border: none; 
-    font-size: 12px;
-    font-weight: bold;
-    color: white; 
-    text-shadow: 1px 1px 1px black;
-    width: 100px;
-}
-
-.folder-name-container {
-    /* width: 75px;
-    margin: auto; */
-    text-align: center;
-}
-
 .current {
     background-color: cyan;
     border-radius: 2px;
+}
+
+.file-image {
+    max-width: 100%;
+}
+
+.file-name-container {
+    /* width: 75px;
+    margin: auto; */
+    text-align: center;
 }
 
 #input {

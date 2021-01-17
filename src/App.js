@@ -2,7 +2,9 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import ContextMenu from './context_menu/contextmenu';
 import Folder from './folder/folder';
-import Contents from './contents/contents'
+import Contents from './contents/contents';
+import FloatingSearchButton from './floating_search_button/floating_search_button';
+import GAPI from './gapi/gapi'
 
 function App() {
 
@@ -13,6 +15,8 @@ function App() {
   const [display, setDisplay] = useState("none")
   const [contexts, setContexts] = useState([])
   const [opened, setOpened] = useState([])
+  const [closeSearch, setCloseSearch] = useState(false)
+  const [driveDocuments, setDriveDocuments] = useState([]);
   const [folders, setFolders] = useState(
     {
       30: {
@@ -105,9 +109,10 @@ function App() {
     }
   }
 
-  const closeContext = (e) => {
+  const handleClick = (e) => {
     e.preventDefault()
     setDisplay("none")
+    if (!e.target.closest(".keep-open")) setCloseSearch(true)
   }
 
   useEffect(() => {
@@ -158,8 +163,9 @@ function App() {
   return (
     <div id="App"
       className="App"
-      onClick={(e) => closeContext(e)}
+      onClick={(e) => handleClick(e)}
       onContextMenu={(e) => rightClick(e)}>
+      <GAPI setDriveDocuments={setDriveDocuments} />
       <div style={{ "display": display, "position": "fixed", "top": top, "left": left, "flexDirection": "row-reverse", "zIndex": "10000" }}>
         <ContextMenu
           parentClassName={parentClassName}
@@ -171,6 +177,7 @@ function App() {
       </div>
       {renderFolders()}
       {renderContents()}
+      <FloatingSearchButton closeSearch={closeSearch} setCloseSearch={setCloseSearch} driveDocuments={driveDocuments}/>
     </div>
   );
 }
