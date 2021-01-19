@@ -98,6 +98,7 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
                 top={folders[child].top}
                 left={folders[child].left}
                 title={folders[child].title}
+                parent={folders[child].parent}
                 folders={folders}
                 setFolders={setFolders}
                 key={child}

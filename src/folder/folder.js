@@ -34,15 +34,14 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
         setPosition(null)
         setFolders(temp)
         nest.className = nest.className.slice(8)
-      } else if (nest.className === "App") {
+      } else if (nest.id === "App") {
         temp[id].parent = null
         temp[id].top = y
         temp[id].left = x
         setFolders(temp)
-        console.log(nest)
       }
       return function cleanup() { mounted = false }
-    }
+    } 
   }, [moving])
 
   useEffect(() => {
@@ -97,11 +96,13 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
     setOffSetY(0)
     setZ("0")
     setClassName("droppable folder")
+    if (!nest && !parent) setNest(document.querySelector(".App"))
     document.removeEventListener('mousemove', drag)
     document.removeEventListener('mouseup', stop)
   }
 
   const handleDoubleClick = () => {
+    if (folders[id].open === true) return
     const temp = { ...folders }
     temp[id].open = true
     setFolders(temp)

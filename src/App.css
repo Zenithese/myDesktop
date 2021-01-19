@@ -1,5 +1,26 @@
-.App {
-  background: url(https://raw.githubusercontent.com/Zenithese/first_brief/master/assets/images/classic_windows.jpg) no-repeat center center fixed;
+.background-1 {
+  background: url("./background_images/4k-windows-background.jpg");
+  background-color: black;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
+
+.background-2 {
+  background: url("./background_images/oranges.jpg");
+  background-color: black;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
+
+.background-3 {
+  background: url("./background_images/sky.jpeg");
+  background-color: black;
+  background-position: center;
+  background-repeat: no-repeat;
   background-size: cover;
   height: 100vh;
 }

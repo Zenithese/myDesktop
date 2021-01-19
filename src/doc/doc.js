@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import ContentEditable from 'react-contenteditable';
 import docImage from './blue_file_icon.png'
 
-export default function Doc({ id, title, parent = "search", left, top, folders, setFolders, setCloseSearch, setDriveDocuments, searchItem }) {
+export default function Doc({ id, title, parent, left, top, folders, setFolders, setCloseSearch, searchItem }) {
 
     const fileEl = useRef(null)
     const [className, setClassName] = useState("file")
@@ -48,12 +48,11 @@ export default function Doc({ id, title, parent = "search", left, top, folders, 
                 setPosition(null)
                 setFolders(temp)
                 nest.className = nest.className.slice(8)
-            } else if (nest.className === "App") {
+            } else if (nest.id === "App") {
                 temp[id].parent = null
                 temp[id].top = y
                 temp[id].left = x
                 setFolders(temp)
-                console.log(temp)
             }
             if (searchItem) {
                 document.getElementById("results-container").appendChild(fileEl.current)
@@ -112,6 +111,7 @@ export default function Doc({ id, title, parent = "search", left, top, folders, 
         setOffSetY(0)
         setZ("0")
         setClassName("droppable file")
+        if (!nest && !parent) setNest(document.querySelector(".App"))
         document.removeEventListener('mousemove', drag)
         document.removeEventListener('mouseup', stop)
     }

@@ -1,13 +1,19 @@
 import { gapi } from 'gapi-script';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 const API_KEY = process.env.REACT_APP_API_KEY;
 const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'];
 const SCOPES = "https://www.googleapis.com/auth/drive  https://www.googleapis.com/auth/drive.appdata";
 
-export default function GAPI({ setDriveDocuments }) {
-    const [signedInUser, setSignedInUser] = useState();
+export default function GAPI() {
+    const [signedInUser, setSignedInUser] = useState(null);
+
+    useEffect(() => {
+        if (!signedInUser) {
+            handleClientLoad()
+        }
+    })
 
     /**
      *  Sign in the user upon button click.
@@ -69,7 +75,7 @@ export default function GAPI({ setDriveDocuments }) {
 
     return (
         <div>
-            <button onClick={() => handleClientLoad()}>Sign-In</button>
+            {/* <button onClick={() => handleClientLoad()}>Sign-In</button> */}
             <button onClick={() => handleSignOutClick()}>Sign-Out</button>
         </div>
     );

@@ -10,6 +10,7 @@ import Doc from './doc/doc'
 
 function App() {
 
+  const [background, setBackground] = useState("App background-1")
   const [top, setTop] = useState("0px")
   const [left, setLeft] = useState("0px")
   const [directionReveal, setDirectionReveal] = useState("right-reveal")
@@ -96,6 +97,12 @@ function App() {
         text: "Delete Folder",
         id: e.target.id
       }])
+    } else if (e.target.className === "file-image") {
+      setContexts([{
+        type: "li",
+        text: "Delete File",
+        id: e.target.id
+      }])
     } else {
       setContexts([
         {
@@ -122,6 +129,7 @@ function App() {
   }, [parentClassName])
 
   const renderFolders = () => {
+    console.log(folders)
     const renderFolders = []
     for (const folder in folders) {
       if (folders[folder].parent === null) {
@@ -132,6 +140,7 @@ function App() {
             top={folders[folder].top}
             left={folders[folder].left}
             title={folders[folder].title}
+            parent={folders[folder].parent}
             folders={folders}
             setFolders={setFolders}
             setDriveDocuments={setDriveDocuments}
@@ -176,10 +185,10 @@ function App() {
 
   return (
     <div id="App"
-      className="App"
+      className={background}
       onClick={(e) => handleClick(e)}
       onContextMenu={(e) => rightClick(e)}>
-      <GAPI setDriveDocuments={setDriveDocuments} />
+      <GAPI />
       <div style={{ "display": display, "position": "fixed", "top": top, "left": left, "flexDirection": "row-reverse", "zIndex": "10000" }}>
         <ContextMenu
           parentClassName={parentClassName}

@@ -30,8 +30,10 @@ export default function FloatingSearchButton({ closeSearch, setCloseSearch, driv
         //     setClassName("fsb")
         //     setResultsClassName("results-closed")
         // }
+        setDriveDocuments([])
         setClassName("fsb-open")
         setResultsClassName("results-open")
+        inputEl.current.value = ""
         inputEl.current.focus()
     }
 
@@ -57,6 +59,7 @@ export default function FloatingSearchButton({ closeSearch, setCloseSearch, driv
                     folders={folders} 
                     left={null}
                     top={null}
+                    parent={"search"}
                     setFolders={setFolders} 
                     setCloseSearch={setCloseSearch} 
                     setDriveDocuments={setDriveDocuments}
@@ -89,7 +92,6 @@ export default function FloatingSearchButton({ closeSearch, setCloseSearch, driv
             .then(function (response) {
                 const res = JSON.parse(response.body);
                 setDriveDocuments(res.files);
-                console.log(res.files)
             });
         } else {
             setDriveDocuments([]);
