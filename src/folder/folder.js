@@ -4,7 +4,9 @@ import ContentEditable from 'react-contenteditable';
 
 export default function Folder({ left, top, title, parent, id, folders, setFolders, dimensions, setOpened }) {
 
+  const folderEl = useRef(null)
   const [value, setValue] = useState(title)
+  const [className, setClassName] = useState("droppable folder")
   const [moving, setMoving] = useState(false)
   const [offSetX, setOffSetX] = useState(0)
   const [offSetY, setOffSetY] = useState(0)
@@ -12,10 +14,8 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
   const [x, setX] = useState(left)
   const [y, setY] = useState(top)
   const [z, setZ] = useState("0")
-  const [className, setClassName] = useState("droppable folder")
   const [nest, setNest] = useState(null)
   const [originalPos, setOriginalPos] = useState([0, 0])
-  const folderEl = useRef(null)
 
   useEffect(() => {
     let mounted = true
@@ -39,6 +39,7 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
         temp[id].top = y
         temp[id].left = x
         setFolders(temp)
+        console.log(nest)
       }
       return function cleanup() { mounted = false }
     }

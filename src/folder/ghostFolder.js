@@ -15,8 +15,6 @@ export default function Folder() {
     const [z, setZ] = useState("0")
     const [className, setClassName] = useState("droppable folder")
     const [nest, setNest] = useState(document.querySelector(".App"))
-    const [gridRowStart, setGridRowStart] = useState("auto")
-    const [gridColStart, setGridColStart] = useState("auto")
     const folderEl = useRef(null)
 
     useEffect(() => {
@@ -36,8 +34,9 @@ export default function Folder() {
 
     useEffect(() => {
         if (offSetY) {
-            document.addEventListener('drag', drag)
-            document.addEventListener('dragend', stop)
+            // document.addEventListener('drag', drag)
+            // document.addEventListener('ondrop', handleDrop)
+            document.addEventListener('mouseup', stop)
         }
     }, [offSetY])
 
@@ -55,9 +54,14 @@ export default function Folder() {
     }
 
     const setImage = (e) => {
-        // e.stopPropagation();
-        // e.dataTransfer.effectAllowed = 'move';
-        // e.dataTransfer.setDragImage(folderEl.current, 20, 20);
+        e.stopPropagation();
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setDragImage(
+            folderEl.current, 
+            e.pageX - e.target.getBoundingClientRect().left + 5, 
+            e.pageY - e.target.getBoundingClientRect().top + 5
+        );
+        // e.dataTransfer.setData('text/plain', folderEl.current.id);
         setMoving(true)
         setPosition("absolute")
         setClassName("folder")
@@ -68,12 +72,20 @@ export default function Folder() {
     }
 
     const drag = (e) => {
+        e.stopPropagation();
         console.log("drag")
+    }
+
+    function handleDrop(e) {
+        console.log("drop")
+        e.stopPropagation(); // stops the browser from redirecting.
+        return false;
     }
 
     const stop = (e) => {
         console.log("over")
-        // e.preventDefault()
+        e.preventDefault()
+        e.stopPropagation();
         nestFolder(e)
         setY(Math.min(Math.max(0, e.pageY - offSetY), document.body.clientHeight - folderEl.current.offsetHeight))
         setX(Math.min(Math.max(0, e.pageX - offSetX), document.body.clientWidth - folderEl.current.offsetWidth))
@@ -82,8 +94,9 @@ export default function Folder() {
         setMoving(false)
         setZ("0")
         setClassName("droppable folder")
-        document.removeEventListener('drag', drag)
-        document.removeEventListener('dragend', stop)
+        // document.removeEventListener('drag', drag)
+        // document.removeEventListener('ondrop', handleDrop)
+        document.removeEventListener('mouseup', stop)
     }
 
     const nestFolder = (e) => {
@@ -107,12 +120,17 @@ export default function Folder() {
 
     return (
         <div
+            id="ghostfolder"
             draggable="true"
             ref={folderEl}
             className={className}
             style={{ "position": position, "top": y, "left": x, "zIndex": z }}>
             <div className="folder-image-container">
-                <img className="folder-image" alt="" src="http://icon-park.com/imagefiles/folder_icon_yellow.png" onDragStart={(e) => setImage(e)}/>
+                <img className="folder-image" 
+                alt="" 
+                src="http://icon-park.com/imagefiles/folder_icon_yellow.png" 
+                onDragStart={(e) => setImage(e)}
+                onDrop={(e) => handleDrop(e)}/>
             </div>
             <div className="folder-name-container" >
                 <ContentEditable

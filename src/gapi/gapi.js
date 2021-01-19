@@ -10,23 +10,6 @@ export default function GAPI({ setDriveDocuments }) {
     const [signedInUser, setSignedInUser] = useState();
 
     /**
-     * Print files.
-     */
-    const listFiles = (searchTerm = null) => {       
-        gapi.client.drive.files
-            .list({
-                pageSize: 10,
-                'fields': "nextPageToken, files(kind, id, name, webViewLink, iconLink, mimeType, description)",
-                q: searchTerm,
-            })
-            .then(function (response) {
-                const res = JSON.parse(response.body);
-                setDriveDocuments(res.files);
-                console.log(res.files)
-            });
-    };
-
-    /**
      *  Sign in the user upon button click.
      */
     const handleAuthClick = (event) => {
@@ -41,8 +24,6 @@ export default function GAPI({ setDriveDocuments }) {
         if (isSignedIn) {
             // Set the signed in user
             setSignedInUser(gapi.auth2.getAuthInstance().currentUser.je.Qt);
-            // list files if user is authenticated
-            listFiles();
         } else {
             // prompt user to sign in
             handleAuthClick();

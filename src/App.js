@@ -4,7 +4,9 @@ import ContextMenu from './context_menu/contextmenu';
 import Folder from './folder/folder';
 import Contents from './contents/contents';
 import FloatingSearchButton from './floating_search_button/floating_search_button';
-import GAPI from './gapi/gapi'
+import GAPI from './gapi/gapi';
+import Doc from './doc/doc'
+// import GhostFolder from './folder/ghostFolder'
 
 function App() {
 
@@ -16,7 +18,7 @@ function App() {
   const [contexts, setContexts] = useState([])
   const [opened, setOpened] = useState([])
   const [closeSearch, setCloseSearch] = useState(false)
-  const [driveDocuments, setDriveDocuments] = useState([]);
+  const [driveDocuments, setDriveDocuments] = useState([])
   const [folders, setFolders] = useState(
     {
       30: {
@@ -124,6 +126,18 @@ function App() {
     for (const folder in folders) {
       if (folders[folder].parent === null) {
         renderFolders.push(
+          folders[folder].type ? 
+          <Doc 
+            id={folder}
+            top={folders[folder].top}
+            left={folders[folder].left}
+            title={folders[folder].title}
+            folders={folders}
+            setFolders={setFolders}
+            setDriveDocuments={setDriveDocuments}
+            key={folder}
+          />
+          :
           <Folder
             id={folder}
             top={folders[folder].top}
@@ -177,7 +191,15 @@ function App() {
       </div>
       {renderFolders()}
       {renderContents()}
-      <FloatingSearchButton closeSearch={closeSearch} setCloseSearch={setCloseSearch} driveDocuments={driveDocuments}/>
+      <FloatingSearchButton 
+        closeSearch={closeSearch} 
+        setCloseSearch={setCloseSearch} 
+        driveDocuments={driveDocuments} 
+        setDriveDocuments={setDriveDocuments}
+        folders={folders} 
+        setFolders={setFolders} 
+      />
+      {/* <GhostFolder /> */}
     </div>
   );
 }

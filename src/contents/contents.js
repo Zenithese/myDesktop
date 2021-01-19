@@ -1,7 +1,8 @@
 import './contents.css'
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react'
 import ContentsBorder from './contentsBorder'
-import Folder from '../folder/folder';
+import Folder from '../folder/folder'
+import Doc from '../doc/doc'
 
 export default function Contents({ id, children, folders, setFolders, contentX, contentY, contentWidth, contentHeight, dimensions, setOpened }) {
 
@@ -91,6 +92,17 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
 
     const renderChildren = children.map(child => {
         return (
+            folders[child].type ? 
+            <Doc 
+                id={child}
+                top={folders[child].top}
+                left={folders[child].left}
+                title={folders[child].title}
+                folders={folders}
+                setFolders={setFolders}
+                key={child}
+            />
+            :
             <Folder 
                 id={child}
                 top={folders[child].top}

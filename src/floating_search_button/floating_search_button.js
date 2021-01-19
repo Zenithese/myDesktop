@@ -1,8 +1,10 @@
+import { gapi } from 'gapi-script';
+import { debounce } from 'lodash';
 import './floating_search_button.css'
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Doc from '../doc/doc'
 
-export default function FloatingSearchButton({ closeSearch, setCloseSearch, driveDocuments }) {
+export default function FloatingSearchButton({ closeSearch, setCloseSearch, driveDocuments, setDriveDocuments, folders, setFolders }) {
 
     const inputEl = useRef(null)
     const [className, setClassName] = useState("fsb")
@@ -35,9 +37,9 @@ export default function FloatingSearchButton({ closeSearch, setCloseSearch, driv
 
     const handleArrowClick = () => {
         if ("right") {
-            setCurrentResult((currentResult + 1) % results.length)
+            setCurrentResult((currentResult + 1) % driveDocuments.length)
         } else {
-            setCurrentResult((currentResult - 1) % results.length)
+            setCurrentResult((currentResult - 1) % driveDocuments.length)
         }
     }
 
@@ -46,23 +48,69 @@ export default function FloatingSearchButton({ closeSearch, setCloseSearch, driv
         // for (let i = 0; i < 3; i ++) {
 
         // }
-        console.log(driveDocuments)
-        return (
-            // <div className="search-item" style={{ "backgroundColor": results[currentResult] }}></div>
-            <Doc id={"doc"} title={"New Doc"}/>
-        )
+        if (driveDocuments[currentResult]) {
+            const { id, name } = driveDocuments[currentResult]
+            return (
+                <Doc 
+                    id={id} 
+                    title={name} 
+                    folders={folders} 
+                    left={null}
+                    top={null}
+                    setFolders={setFolders} 
+                    setCloseSearch={setCloseSearch} 
+                    setDriveDocuments={setDriveDocuments}
+                    searchItem={true}
+                />
+            )
+        } else {
+            return (
+                <div className="search-item" style={{ "backgroundColor": results[currentResult] }}></div>
+            )
+        }
     }
 
+    const handleChange = (e) => {
+        delayedQuery(e.target.value.length ? `name contains '${e.target.value}'` : null);
+    }
+
+    const delayedQuery = useCallback(
+        debounce((q) => listFiles(q), 500),
+        []
+    );
+
+    const listFiles = (searchTerm = null) => {
+        if (searchTerm) {
+            gapi.client.drive.files.list({
+                pageSize: 10,
+                'fields': "nextPageToken, files(kind, id, name, webViewLink, iconLink, mimeType, description)",
+                q: searchTerm,
+            })
+            .then(function (response) {
+                const res = JSON.parse(response.body);
+                setDriveDocuments(res.files);
+                console.log(res.files)
+            });
+        } else {
+            setDriveDocuments([]);
+        }
+    };
+
     return (
-        <div className="fsb-container keep-open" onClick={(e) => handleClick(e)}>
+        <div className="fsb-container keep-open" 
+            onClick={(e) => handleClick(e)}>
             <div className="fsb-left"></div>
             <div className={className}>
-                <input ref={inputEl} className="fsb-input"></input>
+                <input ref={inputEl} className="fsb-input" onChange={(e) => handleChange(e)}></input>
             </div>
             <div className="fsb-right"></div>
-            <div className={resultsClassName}>
+            <div 
+                id={resultsClassName}
+                className={resultsClassName}>
                 <div className="left-arrow" onClick={() => handleArrowClick("left")}></div>
-                {renderResults()}
+                <div id="results-container" className="results-container">
+                    {renderResults()}
+                </div>
                 <div className="right-arrow" onClick={() => handleArrowClick("right")}></div>
             </div>
         </div>
