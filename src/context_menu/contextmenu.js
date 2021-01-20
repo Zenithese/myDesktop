@@ -1,7 +1,7 @@
 import './context_menu.css'
 import {useState, useEffect} from 'react';
 
-export default function ContextMenu({ array, parentClassName, directionReveal, folders, setFolders }) {
+export default function ContextMenu({ array, parentClassName, directionReveal, folders, setFolders, setBackground }) {
 
     const [openContexts, setOpenContexts] = useState([]);
     const [update, setUpdate] = useState(true);
@@ -64,6 +64,12 @@ export default function ContextMenu({ array, parentClassName, directionReveal, f
                 } 
                 delete temp[id]
             })();
+        } else if (e.target.innerHTML === "Classic Windows") {
+            setBackground("App background-1")
+        } else if (e.target.innerHTML === "Oranges") {
+            setBackground("App background-2")
+        } else if (e.target.innerHTML === "Sky") {
+            setBackground("App background-3")
         }
     }
 
@@ -82,6 +88,7 @@ export default function ContextMenu({ array, parentClassName, directionReveal, f
                     update={update}
                     setUpdate={setUpdate}
                     directionReveal={directionReveal} 
+                    setBackground={setBackground}
                 />
             )
         }
@@ -95,7 +102,7 @@ export default function ContextMenu({ array, parentClassName, directionReveal, f
     )
 }
 
-function NestedContext({ text, array, parentClassName, openContexts, num, setOpenContexts, update, setUpdate, directionReveal }) {
+function NestedContext({ text, array, parentClassName, openContexts, num, setOpenContexts, update, setUpdate, directionReveal, setBackground }) {
 
     const [className, setClassName] = useState("contextmenu")
 
@@ -130,7 +137,7 @@ function NestedContext({ text, array, parentClassName, openContexts, num, setOpe
                 {text + " =>"}
             </div>
             <div className="nested-context" >
-                <ContextMenu array={array} parentClassName={className} directionReveal={directionReveal}/>
+                <ContextMenu array={array} parentClassName={className} directionReveal={directionReveal} setBackground={setBackground} />
             </div>
         </div>
     )

@@ -111,8 +111,22 @@ function App() {
           id: `nf-${e.target.id}`
         },
         {
-          type: "li",
-          text: "Change Background"
+          type: "li with context",
+          text: "Change Background",
+          array: [
+            {
+              type: "li",
+              text: "Classic Windows",
+            },
+            {
+              type: "li",
+              text: "Oranges",
+            },
+            {
+              type: "li",
+              text: "Sky",
+            },
+          ]
         },
       ])
     }
@@ -196,6 +210,7 @@ function App() {
           folders={folders}
           setFolders={setFolders}
           array={contexts} 
+          setBackground={setBackground}
         />
       </div>
       {renderFolders()}
