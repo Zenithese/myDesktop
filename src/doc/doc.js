@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import ContentEditable from 'react-contenteditable';
 import docImage from './blue_file_icon.png'
 
-export default function Doc({ id, title, parent, left, top, folders, setFolders, setCloseSearch, searchItem }) {
+export default function Doc({ id, title, parent, left, top, folders, setFolders, setCloseSearch, searchItem, webViewLink }) {
 
     const fileEl = useRef(null)
     const [className, setClassName] = useState("file")
@@ -35,7 +35,8 @@ export default function Doc({ id, title, parent, left, top, folders, setFolders,
                     'left': null,
                     'title': title,
                     'parent': null,
-                    'type': 'doc'
+                    'type': 'doc',
+                    'webViewLink': webViewLink
                 }
             } else if (temp[id].parent) {
                 temp[temp[id].parent].children = 
@@ -144,7 +145,7 @@ export default function Doc({ id, title, parent, left, top, folders, setFolders,
     }
 
     const handleDoubleClick = () => {
-        console.log("clicked doc")
+        window.open(webViewLink)
     }
 
     return (

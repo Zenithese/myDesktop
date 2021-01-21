@@ -6,7 +6,6 @@ import Contents from './contents/contents';
 import FloatingSearchButton from './floating_search_button/floating_search_button';
 import GAPI from './gapi/gapi';
 import Doc from './doc/doc'
-// import GhostFolder from './folder/ghostFolder'
 
 function App() {
 
@@ -20,9 +19,7 @@ function App() {
   const [opened, setOpened] = useState([])
   const [closeSearch, setCloseSearch] = useState(false)
   const [driveDocuments, setDriveDocuments] = useState([])
-  const [folders, setFolders] = useState(
-    {}
-  )
+  const [folders, setFolders] = useState({})
   const [dimensions, setDimensions] = useState({
     height: window.innerHeight,
     width: window.innerWidth
@@ -118,6 +115,7 @@ function App() {
             left={folders[folder].left}
             title={folders[folder].title}
             parent={folders[folder].parent}
+            webViewLink={folders[folder].webViewLink}
             folders={folders}
             setFolders={setFolders}
             setDriveDocuments={setDriveDocuments}
@@ -189,7 +187,6 @@ function App() {
         folders={folders} 
         setFolders={setFolders} 
       />
-      {/* <GhostFolder /> */}
     </div>
   );
 }

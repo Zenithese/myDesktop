@@ -51,7 +51,7 @@ export default function FloatingSearchButton({ closeSearch, setCloseSearch, driv
 
         // }
         if (driveDocuments[currentResult]) {
-            const { id, name } = driveDocuments[currentResult]
+            const { id, name, webViewLink } = driveDocuments[currentResult]
             return (
                 <Doc 
                     id={id} 
@@ -64,6 +64,7 @@ export default function FloatingSearchButton({ closeSearch, setCloseSearch, driv
                     setCloseSearch={setCloseSearch} 
                     setDriveDocuments={setDriveDocuments}
                     searchItem={true}
+                    webViewLink={webViewLink}
                 />
             )
         } else {
@@ -92,6 +93,7 @@ export default function FloatingSearchButton({ closeSearch, setCloseSearch, driv
             .then(function (response) {
                 const res = JSON.parse(response.body);
                 setDriveDocuments(res.files);
+                console.log(res.files)
             });
         } else {
             setDriveDocuments([]);
