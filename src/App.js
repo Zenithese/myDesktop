@@ -20,6 +20,7 @@ function App() {
   const [closeSearch, setCloseSearch] = useState(false)
   const [driveDocuments, setDriveDocuments] = useState([])
   const [folders, setFolders] = useState({})
+  const [accessToken, setAccessToken] = useState(null)
   const [dimensions, setDimensions] = useState({
     height: window.innerHeight,
     width: window.innerWidth
@@ -118,7 +119,7 @@ function App() {
             webViewLink={folders[folder].webViewLink}
             folders={folders}
             setFolders={setFolders}
-            setDriveDocuments={setDriveDocuments}
+            accessToken={accessToken}
             key={folder}
           />
           :
@@ -153,6 +154,7 @@ function App() {
         contentHeight={folders[folder].contentHeight}
         dimensions={dimensions}
         setOpened={setOpened}
+        accessToken={accessToken}
         key={`c-${folder}`}
       />
     })
@@ -166,6 +168,8 @@ function App() {
       <GAPI 
         folders={folders} 
         setFolders={setFolders} 
+        accessToken={accessToken}
+        setAccessToken={setAccessToken}
       />
       <div style={{ "display": display, "position": "fixed", "top": top, "left": left, "flexDirection": "row-reverse", "zIndex": "10000" }}>
         <ContextMenu

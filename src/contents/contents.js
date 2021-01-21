@@ -4,7 +4,7 @@ import ContentsBorder from './contentsBorder'
 import Folder from '../folder/folder'
 import Doc from '../doc/doc'
 
-export default function Contents({ id, children, folders, setFolders, contentX, contentY, contentWidth, contentHeight, dimensions, setOpened }) {
+export default function Contents({ id, children, folders, setFolders, contentX, contentY, contentWidth, contentHeight, dimensions, setOpened, accessToken }) {
 
     const contentsEl = useRef(null)
     const contentsContainerEl = useRef(null)
@@ -99,8 +99,10 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
                 left={folders[child].left}
                 title={folders[child].title}
                 parent={folders[child].parent}
+                webViewLink={folders[child].webViewLink}
                 folders={folders}
                 setFolders={setFolders}
+                accessToken={accessToken}
                 key={child}
             />
             :

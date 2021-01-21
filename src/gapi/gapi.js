@@ -6,9 +6,8 @@ const API_KEY = process.env.REACT_APP_API_KEY;
 const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'];
 const SCOPES = "https://www.googleapis.com/auth/drive  https://www.googleapis.com/auth/drive.appdata";
 
-export default function GAPI({ folders, setFolders }) {
+export default function GAPI({ folders, setFolders, accessToken, setAccessToken }) {
     const [signedInUser, setSignedInUser] = useState(null)
-    const [accessToken, setAccessToken] = useState(null)
     const [updatable, setUpdatable] = useState(false)
     const [appDataId, setAppDataId] = useState(null)
 
