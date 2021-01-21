@@ -145,8 +145,9 @@ export default function Doc({ id, title, parent, left, top, folders, setFolders,
     }
 
     const handleInput = (e) => {
-        setValue(e.target.value)
-        delayedQuery(e.target.value.length ? e.target.value : null);
+        const name = e.target.value.replace(/&nbsp;/g, " ")
+        setValue(name)
+        delayedQuery(name.length ? name : null);
     }
 
     const delayedQuery = useCallback(
