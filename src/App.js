@@ -21,44 +21,7 @@ function App() {
   const [closeSearch, setCloseSearch] = useState(false)
   const [driveDocuments, setDriveDocuments] = useState([])
   const [folders, setFolders] = useState(
-    {
-      30: {
-        'top': 300,
-        'left': 570,
-        'title': 'Aquarius',
-        'parent': null,
-        'children': [],
-        'open': false,
-        'contentX': null,
-        'contentY': null,
-        'contentWidth': 300,
-        'contentHeight': 300
-      },
-      1: {
-        'top': 50,
-        'left': 50,
-        'title': 'origin',
-        'parent': null,
-        'children': [2],
-        'open': false,
-        'contentX': null,
-        'contentY': null,
-        'contentWidth': 300,
-        'contentHeight': 300
-      },
-      2: {
-        'top': 50,
-        'left': 150,
-        'title': 'sipping on gin n juice',
-        'parent': 1,
-        'children': [],
-        'open': false,
-        'contentX': null,
-        'contentY': null,
-        'contentWidth': 300,
-        'contentHeight': 300
-      },
-    }
+    {}
   )
   const [dimensions, setDimensions] = useState({
     height: window.innerHeight,
@@ -202,7 +165,10 @@ function App() {
       className={background}
       onClick={(e) => handleClick(e)}
       onContextMenu={(e) => rightClick(e)}>
-      <GAPI />
+      <GAPI 
+        folders={folders} 
+        setFolders={setFolders} 
+      />
       <div style={{ "display": display, "position": "fixed", "top": top, "left": left, "flexDirection": "row-reverse", "zIndex": "10000" }}>
         <ContextMenu
           parentClassName={parentClassName}
