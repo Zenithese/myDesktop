@@ -7,7 +7,7 @@
 }
 
 .fsb-left {
-    background-color: rebeccapurple;
+    background-color: rgb(0, 117, 250);
     width: 25px;
     height: 50px;
     border-top-left-radius: 35px;
@@ -15,7 +15,7 @@
 }
 
 .fsb-right {
-    background-color: rebeccapurple;
+    background-color: rgb(0, 117, 250);
     width: 25px;
     height: 50px;
     border-top-right-radius: 35px;
@@ -23,13 +23,13 @@
 }
 
 .fsb {
-    background-color: rebeccapurple;
+    background-color: rgb(0, 117, 250);
     width: 0px;
     transition: width .5s;
 }
 
 .fsb-open {
-    background-color: rebeccapurple;
+    background-color: rgb(0, 117, 250);
     width: 200px;
     height: 50px;
     transition: width .5s;
@@ -95,4 +95,13 @@
     width: 94px;
     height: 94px;
     background-color: beige;
+}
+
+.center-search {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-40%, -40%);
+  transform: translate(-40%, -40%);
 }

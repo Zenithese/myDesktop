@@ -3,6 +3,8 @@ import { debounce } from 'lodash';
 import './floating_search_button.css'
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Doc from '../doc/doc'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSearchPlus } from '@fortawesome/free-solid-svg-icons'
 
 export default function FloatingSearchButton({ closeSearch, setCloseSearch, driveDocuments, setDriveDocuments, folders, setFolders }) {
 
@@ -96,8 +98,8 @@ export default function FloatingSearchButton({ closeSearch, setCloseSearch, driv
         <div className="fsb-container keep-open"
             onClick={(e) => handleClick(e)}>
             <div className="fsb-left"></div>
+            {resultsClassName === "results-closed" ? <div className="center-search"><FontAwesomeIcon icon={faSearchPlus} /></div> : null}
             <div className={className}>
-                {/* &#128269; */}
                 <input ref={inputEl} className="fsb-input" onChange={(e) => handleChange(e)}></input>
             </div>
             <div className="fsb-right"></div>
