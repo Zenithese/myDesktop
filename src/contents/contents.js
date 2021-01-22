@@ -4,7 +4,7 @@ import ContentsBorder from './contentsBorder'
 import Folder from '../folder/folder'
 import Doc from '../doc/doc'
 
-export default function Contents({ id, children, folders, setFolders, contentX, contentY, contentWidth, contentHeight, dimensions, setOpened, accessToken }) {
+export default function Contents({ id, children, folders, setFolders, contentX, contentY, contentWidth, contentHeight, dimensions, opened, setOpened, accessToken }) {
 
     const contentsEl = useRef(null)
     const contentsContainerEl = useRef(null)
@@ -78,10 +78,7 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
     }
 
     const handleClose = () => {
-        const temp = { ...folders }
         const _id = Number(id.slice(2))
-        temp[_id].open = false
-        setFolders(temp)
         setOpened(prev => prev.filter(id => id !== _id))
     }
 
@@ -116,6 +113,7 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
                 folders={folders}
                 setFolders={setFolders}
                 dimensions={dimensions}
+                opened={opened}
                 setOpened={setOpened}
                 key={child} 
             />

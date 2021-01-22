@@ -1,8 +1,9 @@
 import './folder.css';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import ContentEditable from 'react-contenteditable';
+import { debounce } from 'lodash';
 
-export default function Folder({ left, top, title, parent, id, folders, setFolders, dimensions, setOpened }) {
+export default function Folder({ left, top, title, parent, id, folders, setFolders, dimensions, opened, setOpened }) {
 
   const folderEl = useRef(null)
   const [value, setValue] = useState(title)
@@ -63,10 +64,6 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
     }
   }, [position])
 
-  const handleInput = (e) => {
-    setValue(e.target.value)
-  }
-
   const start = (e) => {
     setOriginalPos([x, y])
     setClassName("folder")
@@ -102,10 +99,7 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
   }
 
   const handleDoubleClick = () => {
-    if (folders[id].open === true) return
-    const temp = { ...folders }
-    temp[id].open = true
-    setFolders(temp)
+    if (opened.includes(Number(id))) return;
     setOpened(prev => [ ...prev, Number(id)])
   }
 
@@ -127,6 +121,21 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
       folder.hidden = false
     }
   }
+
+  const handleInput = (e) => {
+    const name = e.target.value.replace(/&nbsp;/g, " ")
+    setValue(name)
+    delayedQuery(name.length ? name : null);
+  }
+
+  const delayedQuery = useCallback(
+    debounce((name) => {
+      const temp = { ...folders }
+      temp[id].title = name
+      setFolders(temp)
+    }, 500),
+    []
+  );
 
   return (
     <div id={`f-${id}`}

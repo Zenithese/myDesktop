@@ -132,6 +132,7 @@ function App() {
             setFolders={setFolders}
             parent={null}
             dimensions={dimensions}
+            opened={opened}
             setOpened={setOpened}
             key={folder} 
           />

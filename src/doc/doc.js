@@ -3,7 +3,6 @@ import React, { useState, useEffect, useRef, useCallback } from 'react'
 import ContentEditable from 'react-contenteditable'
 import docImage from './blue_file_icon.png'
 import { debounce } from 'lodash'
-import { gapi } from 'gapi-script'
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -159,13 +158,11 @@ export default function Doc({ id, title, parent, left, top, folders, setFolders,
         fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?key=${API_KEY}`, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`,
-                // 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ 'name': `${name}` }),
             method: 'PATCH'
         })
-        // console.log(id, API_KEY, accessToken)
     }
 
     const handleDoubleClick = () => {

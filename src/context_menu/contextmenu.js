@@ -22,7 +22,6 @@ export default function ContextMenu({ array, parentClassName, directionReveal, f
                     'title': 'New Folder',
                     'parent': null,
                     'children': [],
-                    'open': false,
                     'contentX': null,
                     'contentY': null,
                     'contentWidth': 300,
