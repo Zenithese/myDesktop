@@ -6,7 +6,7 @@ const API_KEY = process.env.REACT_APP_API_KEY;
 const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'];
 const SCOPES = "https://www.googleapis.com/auth/drive  https://www.googleapis.com/auth/drive.appdata";
 
-export default function GAPI({ folders, setFolders, accessToken, setAccessToken }) {
+export default function GAPI({ folders, setFolders, accessToken, setAccessToken, setDisplayGreeting }) {
     const [signedInUser, setSignedInUser] = useState(null)
     const [updatable, setUpdatable] = useState(false)
     const [appDataId, setAppDataId] = useState(null)
@@ -35,6 +35,7 @@ export default function GAPI({ folders, setFolders, accessToken, setAccessToken 
      */
     const handleAuthClick = (event) => {
         gapi.auth2.getAuthInstance().signIn();
+        setDisplayGreeting(false);
     };
 
     /**
@@ -53,15 +54,19 @@ export default function GAPI({ folders, setFolders, accessToken, setAccessToken 
             setAccessToken(instance.currentUser[key][key2].access_token)
         } else {
             // prompt user to sign in
-            handleAuthClick();
+            // handleAuthClick();
+            // greeting()
+            setDisplayGreeting(true)
         }
     };
 
     /**
      *  Sign out the user upon button click.
      */
-    const handleSignOutClick = (event) => {
+    const handleSignOutClick = () => {
         gapi.auth2.getAuthInstance().signOut();
+        setDisplayGreeting(false);
+        setSignedInUser(null);
     };
 
     /**
@@ -140,8 +145,10 @@ export default function GAPI({ folders, setFolders, accessToken, setAccessToken 
 
     return (
         <div>
-            {/* <button onClick={() => handleAuthClick()}>Sign-In</button> */}
-            <button onClick={() => handleSignOutClick()}>Sign-Out</button>
+            {signedInUser ? 
+                <button onClick={() => handleSignOutClick()}>Sign-Out</button>
+                : 
+                <button onClick={() => handleAuthClick()}>Authorize</button>}
         </div>
     );
 };

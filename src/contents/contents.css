@@ -3,6 +3,7 @@
     background-color: gray;
     position: fixed;
     z-index: 1;
+    opacity: .97;
 }
 
 .contents {
@@ -10,11 +11,12 @@
     height: 300px;
     background-color: gray;
     display: grid;
+    overflow: scroll;
 }
 
 .contents-handle {
     height: 15px;
-    background-color: red;
+    background-color:  rgb(0, 117, 250);
 }
 
 .close-button {
@@ -28,7 +30,7 @@
     left: -5px;
     width: 5px;
     height: 5px;
-    background-color: blue;
+    background-color: darkgray;
 }
 .corner-2 {
     position: absolute;
@@ -36,7 +38,7 @@
     right: -5px;
     width: 5px;
     height: 5px;
-    background-color: blue;
+    background-color: darkgray;
 }
 .corner-3 {
     position: absolute;
@@ -44,7 +46,7 @@
     left: -5px;
     width: 5px;
     height: 5px;
-    background-color: blue;
+    background-color: darkgray;
 }
 .corner-4 {
     position: absolute;
@@ -52,7 +54,7 @@
     right: -5px;
     width: 5px;
     height: 5px;
-    background-color: blue;
+    background-color: darkgray;
 }
 
 .corner-1:hover {
@@ -76,28 +78,28 @@
     top: -5px;
     width: 300px;
     height: 5px;
-    background-color: blue;
+    background-color: darkgray;
 }
 .side-left {
     position: absolute;
     left: -5px;
     width: 5px;
     height: 315px;
-    background-color: blue;
+    background-color: darkgray;
 }
 .side-right {
     position: absolute;
     right: -5px;
     width: 5px;
     height: 315px;
-    background-color: blue;
+    background-color: darkgray;
 }
 .side-bottom {
     position: absolute;
     bottom: -5px;
     width: 300px;
     height: 5px;
-    background-color: blue;
+    background-color: darkgray;
 }
 
 .side-top:hover {

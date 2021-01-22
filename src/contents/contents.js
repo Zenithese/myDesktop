@@ -29,7 +29,7 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
         setGridCol("100px ".repeat(col))
         const children = contents.children
         for (let i = 0; i < children.length; i++) {
-            children[i].style.gridRowStart = Math.floor(i / row) + 1
+            children[i].style.gridRowStart = Math.floor(i / col) + 1
             children[i].style.gridColumnStart = (i + 1) % col || col
         }
     })
@@ -137,7 +137,7 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
                 setFolders={setFolders} />
             <div className="contents-handle"
                 onMouseDown={(e) => start(e)}>
-                <div className="close-button" onClick={() => handleClose()}>x</div>
+                <div className="close-button" onClick={() => handleClose()}>&#10006;</div>
             </div>
             <div
                 id={id}

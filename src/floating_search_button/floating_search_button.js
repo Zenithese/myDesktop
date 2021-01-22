@@ -46,30 +46,22 @@ export default function FloatingSearchButton({ closeSearch, setCloseSearch, driv
     }
 
     const renderResults = () => {
-        // const render = [];
-        // for (let i = 0; i < 3; i ++) {
-
-        // }
         if (driveDocuments[currentResult]) {
             const { id, name, webViewLink } = driveDocuments[currentResult]
             return (
-                <Doc 
-                    id={id} 
-                    title={name} 
-                    folders={folders} 
+                <Doc
+                    id={id}
+                    title={name}
+                    folders={folders}
                     left={null}
                     top={null}
                     parent={"search"}
-                    setFolders={setFolders} 
-                    setCloseSearch={setCloseSearch} 
+                    setFolders={setFolders}
+                    setCloseSearch={setCloseSearch}
                     setDriveDocuments={setDriveDocuments}
                     searchItem={true}
                     webViewLink={webViewLink}
                 />
-            )
-        } else {
-            return (
-                <div className="search-item" style={{ "backgroundColor": results[currentResult] }}></div>
             )
         }
     }
@@ -90,33 +82,38 @@ export default function FloatingSearchButton({ closeSearch, setCloseSearch, driv
                 'fields': "nextPageToken, files(kind, id, name, webViewLink, iconLink, mimeType, description)",
                 q: searchTerm,
             })
-            .then(function (response) {
-                const res = JSON.parse(response.body);
-                setDriveDocuments(res.files);
-                console.log(res.files)
-            });
+                .then(function (response) {
+                    const res = JSON.parse(response.body);
+                    setDriveDocuments(res.files);
+                    console.log(res.files)
+                });
         } else {
             setDriveDocuments([]);
         }
     };
 
     return (
-        <div className="fsb-container keep-open" 
+        <div className="fsb-container keep-open"
             onClick={(e) => handleClick(e)}>
             <div className="fsb-left"></div>
             <div className={className}>
                 <input ref={inputEl} className="fsb-input" onChange={(e) => handleChange(e)}></input>
             </div>
             <div className="fsb-right"></div>
-            <div 
-                id={resultsClassName}
-                className={resultsClassName}>
-                <div className="left-arrow" onClick={() => handleArrowClick("left")}></div>
-                <div id="results-container" className="results-container">
-                    {renderResults()}
-                </div>
-                <div className="right-arrow" onClick={() => handleArrowClick("right")}></div>
-            </div>
+            {
+                driveDocuments[currentResult] ?
+                    <div
+                        id={resultsClassName}
+                        className={resultsClassName}>
+                        <div className="left-arrow" onClick={() => handleArrowClick("left")}></div>
+                        <div id="results-container" className="results-container">
+                            {renderResults()}
+                        </div>
+                        <div className="right-arrow" onClick={() => handleArrowClick("right")}></div>
+                    </div>
+                    :
+                    null
+            }
         </div>
     )
 }
