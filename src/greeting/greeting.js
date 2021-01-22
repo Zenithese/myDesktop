@@ -1,11 +1,12 @@
 import './greeting.css'
 import React from 'react'
+import GAPI from '../gapi/gapi'
 
-export default function Greeting({ setDisplayGreeting }) {
+export default function Greeting({ signedInUser, setSignedInUser, folders, setFolders, accessToken, setAccessToken }) {
     
     return (
-        <div className="modal-content" >
-            <span className="greeting-close" onClick={() => setDisplayGreeting(false)}>&#10006;</span>
+        <div className={signedInUser ? "greeting-closed" : "greeting-opened" } >
+            <span className="greeting-close">&#10006;</span>
             <br />
             Welcome to (your) myDesktop: a desktop for Google Drive!
             <br />
@@ -23,7 +24,14 @@ export default function Greeting({ setDisplayGreeting }) {
             Lastly, your document and folder positions are saved so you can return where you left off.
             <br />
             <br />
-            Authorize to gain said functionality!
+            <GAPI
+                folders={folders}
+                setFolders={setFolders}
+                accessToken={accessToken}
+                setAccessToken={setAccessToken}
+                signedInUser={signedInUser}
+                setSignedInUser={setSignedInUser}
+            />
         </div>
     )
 }

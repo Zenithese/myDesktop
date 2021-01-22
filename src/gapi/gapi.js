@@ -1,13 +1,15 @@
+import './gapi.css'
 import { gapi } from 'gapi-script';
 import React, { useState, useEffect } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 const API_KEY = process.env.REACT_APP_API_KEY;
 const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'];
 const SCOPES = "https://www.googleapis.com/auth/drive  https://www.googleapis.com/auth/drive.appdata";
 
-export default function GAPI({ folders, setFolders, accessToken, setAccessToken, setDisplayGreeting }) {
-    const [signedInUser, setSignedInUser] = useState(null)
+export default function GAPI({ folders, setFolders, accessToken, setAccessToken, signedInUser, setSignedInUser }) {
     const [updatable, setUpdatable] = useState(false)
     const [appDataId, setAppDataId] = useState(null)
 
@@ -35,7 +37,6 @@ export default function GAPI({ folders, setFolders, accessToken, setAccessToken,
      */
     const handleAuthClick = (event) => {
         gapi.auth2.getAuthInstance().signIn();
-        setDisplayGreeting(false);
     };
 
     /**
@@ -56,7 +57,6 @@ export default function GAPI({ folders, setFolders, accessToken, setAccessToken,
             // prompt user to sign in
             // handleAuthClick();
             // greeting()
-            setDisplayGreeting(true)
         }
     };
 
@@ -65,7 +65,6 @@ export default function GAPI({ folders, setFolders, accessToken, setAccessToken,
      */
     const handleSignOutClick = () => {
         gapi.auth2.getAuthInstance().signOut();
-        setDisplayGreeting(false);
         setSignedInUser(null);
     };
 
@@ -144,11 +143,15 @@ export default function GAPI({ folders, setFolders, accessToken, setAccessToken,
     }
 
     return (
-        <div>
+        <div className="auth-container">
             {signedInUser ? 
-                <button onClick={() => handleSignOutClick()}>Sign-Out</button>
+                <button className="center" onClick={() => handleSignOutClick()}><FontAwesomeIcon icon={faSignOutAlt} /></button>
                 : 
                 <button onClick={() => handleAuthClick()}>Authorize</button>}
+            {signedInUser ? 
+                " to lose said functionality!"
+                : 
+                " to gain said functionality!"}
         </div>
     );
 };

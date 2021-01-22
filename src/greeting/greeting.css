@@ -1,10 +1,10 @@
-.modal-content {
+.greeting-opened {
     position: fixed;
     margin: 0;
-    top: 50%;
+    bottom: 50%;
     left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, 50%);
+    transform: translate(-50%, 50%);
     width: 300px;
     height: 415px;
     background-color: gray;
@@ -17,6 +17,28 @@
     z-index: 3;
     padding: 20px;
     border: solid darkgray 4px;
+    transition: all .5s;
+}
+
+.greeting-closed {
+    position: fixed;
+    margin: 0;
+    bottom: 15px;
+    left: 15px;
+    width: 46px;
+    height: 46px;
+    background-color: gray;
+    opacity: .97;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: floralwhite;
+    font-size: 0;
+    z-index: 3;
+    border: solid darkgray 4px;
+    overflow: hidden;
+    border-radius: 100%;
+    transition: all .5s;
 }
 
 .greeting-close {

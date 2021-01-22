@@ -97,6 +97,7 @@ export default function FloatingSearchButton({ closeSearch, setCloseSearch, driv
             onClick={(e) => handleClick(e)}>
             <div className="fsb-left"></div>
             <div className={className}>
+                {/* &#128269; */}
                 <input ref={inputEl} className="fsb-input" onChange={(e) => handleChange(e)}></input>
             </div>
             <div className="fsb-right"></div>

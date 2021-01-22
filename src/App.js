@@ -10,6 +10,7 @@ import Greeting from './greeting/greeting'
 
 function App() {
 
+  const [signedInUser, setSignedInUser] = useState(null)
   const [displayGreeting, setDisplayGreeting] = useState(false)
   const [background, setBackground] = useState("App background-1")
   const [top, setTop] = useState("0px")
@@ -168,14 +169,24 @@ function App() {
       className={background}
       onClick={(e) => handleClick(e)}
       onContextMenu={(e) => rightClick(e)}>
-      { displayGreeting ? <Greeting setDisplayGreeting={setDisplayGreeting} /> : null }
-      <GAPI 
+      <Greeting
+        displayGreeting={displayGreeting}
+        setDisplayGreeting={setDisplayGreeting}
+        folders={folders}
+        setFolders={setFolders}
+        accessToken={accessToken}
+        setAccessToken={setAccessToken}
+        setDisplayGreeting={setDisplayGreeting}
+        signedInUser={signedInUser}
+        setSignedInUser={setSignedInUser}
+      /> 
+      {/* <GAPI 
         folders={folders} 
         setFolders={setFolders} 
         accessToken={accessToken}
         setAccessToken={setAccessToken}
         setDisplayGreeting={setDisplayGreeting}
-      />
+      /> */}
       <div style={{ "display": display, "position": "fixed", "top": top, "left": left, "flexDirection": "row-reverse", "zIndex": "10000" }}>
         <ContextMenu
           parentClassName={parentClassName}
