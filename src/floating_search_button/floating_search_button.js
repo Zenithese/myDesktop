@@ -44,7 +44,7 @@ export default function FloatingSearchButton({ closeSearch, setCloseSearch, driv
     }
 
     const renderResults = () => {
-        console.log(driveDocuments)
+        // console.log(driveDocuments)
         if (driveDocuments[currentResult]) {
             const { id, name, webViewLink, iconLink } = driveDocuments[currentResult]
             return (

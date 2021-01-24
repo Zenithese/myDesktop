@@ -21,6 +21,7 @@ export default function Doc({ id, title, parent, left, top, folders, setFolders,
     const [z, setZ] = useState("0")
     const [nest, setNest] = useState(null)
     const [originalPos, setOriginalPos] = useState([0, 0])
+    const [duplicate, setDuplicate] = useState(false)
 
     useEffect(() => {
         let mounted = true
@@ -32,6 +33,15 @@ export default function Doc({ id, title, parent, left, top, folders, setFolders,
             }
             const nestClassName = nest.className.split(" ")
             const temp = { ...folders }
+
+            let replace = true;
+            if (duplicate) {
+                if (window.confirm(`${temp[id].title} already exist ${temp[id].parent ? `in folder ${temp[temp[id].parent].title}` : "on the desktop"} would you like to move it?`)) {
+                    console.log("replace")
+                } else {
+                    replace = false
+                }
+            }
             
             if (!temp[id]) {
                 temp[id] = {
@@ -47,14 +57,16 @@ export default function Doc({ id, title, parent, left, top, folders, setFolders,
                 temp[temp[id].parent].children = 
                 temp[temp[id].parent].children.filter(folderId => folderId !== id)
             }
-
-            if (nestClassName[1] === "droppable") {
+            if (!replace) {
+                setFolders(temp)
+            } else if (nestClassName[1] === "droppable") {
                 temp[nest.id.slice(2)].children.push(Number(id) ? Number(id) : id)
                 temp[id].parent = Number(nest.id.slice(2))
                 setPosition(null)
                 setFolders(temp)
                 nest.className = nest.className.slice(8)
             } else if (nest.id === "App") {
+                console.log("effecting postion")
                 temp[id].parent = null
                 temp[id].top = y
                 temp[id].left = x
@@ -89,6 +101,11 @@ export default function Doc({ id, title, parent, left, top, folders, setFolders,
     }, [position])
 
     const start = (e) => {
+        if (folders[id] && e.target.closest(".keep-open")) {
+            setDuplicate(true)
+        } else if (duplicate) {
+            setDuplicate(false)
+        }
         setOriginalPos([x, y])
         setClassName("file")
         setZ("1000")
