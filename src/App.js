@@ -209,6 +209,7 @@ function App() {
         setDriveDocuments={setDriveDocuments}
         folders={folders} 
         setFolders={setFolders} 
+        dimensions={dimensions}
       />
     </div>
   );

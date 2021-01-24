@@ -6,7 +6,7 @@ import Doc from '../doc/doc'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearchPlus } from '@fortawesome/free-solid-svg-icons'
 
-export default function FloatingSearchButton({ closeSearch, setCloseSearch, driveDocuments, setDriveDocuments, folders, setFolders }) {
+export default function FloatingSearchButton({ closeSearch, setCloseSearch, driveDocuments, setDriveDocuments, folders, setFolders, dimensions }) {
 
     const inputEl = useRef(null)
     const [className, setClassName] = useState("fsb")
@@ -60,6 +60,7 @@ export default function FloatingSearchButton({ closeSearch, setCloseSearch, driv
                     searchItem={true}
                     webViewLink={webViewLink}
                     iconLink={iconLink}
+                    dimensions={dimensions}
                 />
             )
         }
