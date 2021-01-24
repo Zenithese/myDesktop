@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/myDesktop/static/css/main.f2631b20.chunk.css",
+    "main.js": "/myDesktop/static/js/main.78a4bf99.chunk.js",
+    "main.js.map": "/myDesktop/static/js/main.78a4bf99.chunk.js.map",
+    "runtime-main.js": "/myDesktop/static/js/runtime-main.a164dee0.js",
+    "runtime-main.js.map": "/myDesktop/static/js/runtime-main.a164dee0.js.map",
+    "static/js/2.9b92347f.chunk.js": "/myDesktop/static/js/2.9b92347f.chunk.js",
+    "static/js/2.9b92347f.chunk.js.map": "/myDesktop/static/js/2.9b92347f.chunk.js.map",
+    "static/js/3.0850c95a.chunk.js": "/myDesktop/static/js/3.0850c95a.chunk.js",
+    "static/js/3.0850c95a.chunk.js.map": "/myDesktop/static/js/3.0850c95a.chunk.js.map",
+    "index.html": "/myDesktop/index.html",
+    "static/css/main.f2631b20.chunk.css.map": "/myDesktop/static/css/main.f2631b20.chunk.css.map",
+    "static/js/2.9b92347f.chunk.js.LICENSE.txt": "/myDesktop/static/js/2.9b92347f.chunk.js.LICENSE.txt",
+    "static/media/App.css": "/myDesktop/static/media/sky.0f976977.jpeg",
+    "static/media/filledDrive.fe42fe8b.png": "/myDesktop/static/media/filledDrive.fe42fe8b.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a164dee0.js",
+    "static/js/2.9b92347f.chunk.js",
+    "static/css/main.f2631b20.chunk.css",
+    "static/js/main.78a4bf99.chunk.js"
+  ]
+}
