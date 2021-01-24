@@ -98,10 +98,11 @@
 }
 
 .center-search {
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -ms-transform: translate(-40%, -40%);
-  transform: translate(-40%, -40%);
+    z-index: 2;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-40%, -40%);
+    transform: translate(-40%, -40%);
 }
