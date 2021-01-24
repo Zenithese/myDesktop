@@ -11,7 +11,6 @@ export default function FloatingSearchButton({ closeSearch, setCloseSearch, driv
     const inputEl = useRef(null)
     const [className, setClassName] = useState("fsb")
     const [resultsClassName, setResultsClassName] = useState("results-closed")
-    const results = ["blue", "red", "green", "yellow", "orange"]
     const [currentResult, setCurrentResult] = useState(0)
 
     useEffect(() => {
@@ -23,15 +22,12 @@ export default function FloatingSearchButton({ closeSearch, setCloseSearch, driv
     })
 
     const handleClick = (e) => {
-        // if (className === "fsb-open" && e.target.className === "fsb-input") return;
-        // if (className === "fsb") {
-        //     setClassName("fsb-open")
-        //     setResultsClassName("results-open")
-        //     inputEl.current.focus()
-        // } else {
-        //     setClassName("fsb")
-        //     setResultsClassName("results-closed")
-        // }
+        if (e.target.className === "left-arrow" 
+            || e.target.className === "right-arrow" 
+            || e.target.className === "fsb-input"
+            || e.target.className === "results-open"
+            || e.target.id === "input") return;
+        setCurrentResult(0)
         setDriveDocuments([])
         setClassName("fsb-open")
         setResultsClassName("results-open")
@@ -39,17 +35,18 @@ export default function FloatingSearchButton({ closeSearch, setCloseSearch, driv
         inputEl.current.focus()
     }
 
-    const handleArrowClick = () => {
-        if ("right") {
+    const handleArrowClick = (dir) => {
+        if (dir === "right") {
             setCurrentResult((currentResult + 1) % driveDocuments.length)
         } else {
-            setCurrentResult((currentResult - 1) % driveDocuments.length)
+            setCurrentResult(currentResult ? (currentResult - 1) % driveDocuments.length : driveDocuments.length - 1)
         }
     }
 
     const renderResults = () => {
+        console.log(driveDocuments)
         if (driveDocuments[currentResult]) {
-            const { id, name, webViewLink } = driveDocuments[currentResult]
+            const { id, name, webViewLink, iconLink } = driveDocuments[currentResult]
             return (
                 <Doc
                     id={id}
@@ -60,9 +57,9 @@ export default function FloatingSearchButton({ closeSearch, setCloseSearch, driv
                     parent={"search"}
                     setFolders={setFolders}
                     setCloseSearch={setCloseSearch}
-                    setDriveDocuments={setDriveDocuments}
                     searchItem={true}
                     webViewLink={webViewLink}
+                    iconLink={iconLink}
                 />
             )
         }
@@ -81,13 +78,16 @@ export default function FloatingSearchButton({ closeSearch, setCloseSearch, driv
         if (searchTerm) {
             gapi.client.drive.files.list({
                 pageSize: 10,
-                'fields': "nextPageToken, files(kind, id, name, webViewLink, iconLink, mimeType, description)",
+                'fields': "nextPageToken, files(kind, id, name, webViewLink, iconLink, mimeType)",
                 q: searchTerm,
             })
                 .then(function (response) {
                     const res = JSON.parse(response.body);
+                    // res.files.forEach(file => {
+                    //     if (folders[file.id]) console.log("match")
+                    // })
+                    // console.log(folders)
                     setDriveDocuments(res.files);
-                    console.log(res.files)
                 });
         } else {
             setDriveDocuments([]);

@@ -57,11 +57,15 @@ export default function ContextMenu({ array, parentClassName, directionReveal, f
                     })
                 }
                 if (inital) {
-                    if (temp[id].parent) temp[temp[id].parent].children = temp[temp[id].parent].children.filter(folderId => folderId !== Number(id))
+                    if (e.target.innerHTML === "Delete File") {
+                        if (temp[id].parent) temp[temp[id].parent].children = temp[temp[id].parent].children.filter(folderId => folderId !== id)
+                    } else {
+                        if (temp[id].parent) temp[temp[id].parent].children = temp[temp[id].parent].children.filter(folderId => folderId !== Number(id))
+                    }
                     delete temp[id]
                     setFolders(temp)
                 } 
-                delete temp[id]
+                // delete temp[id]
             })();
         } else if (e.target.innerHTML === "Classic Windows") {
             setBackground("App background-1")

@@ -11,13 +11,26 @@
     border-radius: 2px;
 }
 
+.file-image-container {
+    position: relative;
+}
+
 .file-image {
-    max-width: 100%;
+    max-width: 90%;
+}
+
+.file-icon {
+    position: absolute;
+    right: 0;
 }
 
 .file-name-container {
-    /* width: 75px;
-    margin: auto; */
+    height: 30px;
+    overflow: hidden;
+    text-align: center;
+}
+
+.file-name-container-focus {
     text-align: center;
 }
 

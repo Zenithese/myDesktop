@@ -107,7 +107,6 @@ function App() {
   }, [parentClassName])
 
   const renderFolders = () => {
-    console.log(folders)
     const renderFolders = []
     for (const folder in folders) {
       if (folders[folder].parent === null) {
@@ -120,6 +119,7 @@ function App() {
             title={folders[folder].title}
             parent={folders[folder].parent}
             webViewLink={folders[folder].webViewLink}
+            iconLink={folders[folder].iconLink}
             folders={folders}
             setFolders={setFolders}
             accessToken={accessToken}

@@ -97,6 +97,7 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
                 title={folders[child].title}
                 parent={folders[child].parent}
                 webViewLink={folders[child].webViewLink}
+                iconLink={folders[child].iconLink}
                 folders={folders}
                 setFolders={setFolders}
                 accessToken={accessToken}

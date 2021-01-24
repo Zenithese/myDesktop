@@ -1,15 +1,16 @@
 import './doc.css'
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import ContentEditable from 'react-contenteditable'
-import docImage from './blue_file_icon.png'
+import docImage from './filledDrive.png'
 import { debounce } from 'lodash'
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
-export default function Doc({ id, title, parent, left, top, folders, setFolders, setCloseSearch, searchItem, webViewLink, accessToken }) {
+export default function Doc({ id, title, parent, left, top, folders, setFolders, setCloseSearch, searchItem, webViewLink, iconLink, accessToken }) {
 
     const fileEl = useRef(null)
     const [className, setClassName] = useState("file")
+    const [inputClassName, setInputClassName] = useState("file-name-container")
     const [value, setValue] = useState(null)
     const [moving, setMoving] = useState(false)
     const [offSetX, setOffSetX] = useState(0)
@@ -39,7 +40,8 @@ export default function Doc({ id, title, parent, left, top, folders, setFolders,
                     'title': title,
                     'parent': null,
                     'type': 'doc',
-                    'webViewLink': webViewLink
+                    'webViewLink': webViewLink,
+                    'iconLink': iconLink
                 }
             } else if (temp[id].parent) {
                 temp[temp[id].parent].children = 
@@ -169,6 +171,14 @@ export default function Doc({ id, title, parent, left, top, folders, setFolders,
         window.open(webViewLink)
     }
 
+    const handleFocus = () => {
+        setInputClassName("file-name-container-focus")
+    }
+
+    const handleBlur = () => {
+        setInputClassName("file-name-container")
+    }
+
     return (
         <div 
             id={`d-${id}`}
@@ -185,14 +195,24 @@ export default function Doc({ id, title, parent, left, top, folders, setFolders,
                     onMouseDown={(e) => start(e)}
                     onDoubleClick={() => handleDoubleClick()}
                 />
+                <img draggable="false"
+                    id={id}
+                    className="file-icon"
+                    alt=""
+                    src={iconLink}
+                    onMouseDown={(e) => start(e)}
+                    onDoubleClick={() => handleDoubleClick()}
+                />
             </div>
-            <div className="file-name-container" >
+            <div className={inputClassName} >
                 <ContentEditable
                     id="input"
                     html={value ? value : title}
                     data-column="item"
                     className="content-editable"
                     onChange={(e) => handleInput(e)}
+                    onFocus={() => handleFocus()}
+                    onBlur={() => handleBlur()}
                 />
             </div>
         </div>
