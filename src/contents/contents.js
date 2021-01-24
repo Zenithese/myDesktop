@@ -101,6 +101,7 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
                 folders={folders}
                 setFolders={setFolders}
                 accessToken={accessToken}
+                dimensions={dimensions}
                 key={child}
             />
             :

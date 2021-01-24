@@ -6,13 +6,12 @@ import { debounce } from 'lodash'
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
-export default function Doc({ id, title, parent, left, top, folders, setFolders, setCloseSearch, searchItem, webViewLink, iconLink, accessToken }) {
+export default function Doc({ id, title, parent, left, top, folders, setFolders, setCloseSearch, searchItem, webViewLink, iconLink, accessToken, dimensions }) {
 
     const fileEl = useRef(null)
     const [className, setClassName] = useState("file")
     const [inputClassName, setInputClassName] = useState("file-name-container")
     const [value, setValue] = useState(null)
-    const [moving, setMoving] = useState(false)
     const [offSetX, setOffSetX] = useState(0)
     const [offSetY, setOffSetY] = useState(0)
     const [position, setPosition] = useState(parent ? "grid" : "fixed")
@@ -20,26 +19,27 @@ export default function Doc({ id, title, parent, left, top, folders, setFolders,
     const [y, setY] = useState(top)
     const [z, setZ] = useState("0")
     const [nest, setNest] = useState(null)
-    const [originalPos, setOriginalPos] = useState([0, 0])
     const [duplicate, setDuplicate] = useState(false)
+    const [update, setUpdate] = useState(false)
 
     useEffect(() => {
-        let mounted = true
-        if (!moving && nest && mounted) {
-            if (nest.id.slice(2) === fileEl.current.id.slice(2)) {
-                setX(originalPos[0])
-                setY(originalPos[1])
-                return
-            }
+        if (nest && update) {
             const nestClassName = nest.className.split(" ")
             const temp = { ...folders }
 
             let replace = true;
             if (duplicate) {
-                if (window.confirm(`${temp[id].title} already exist ${temp[id].parent ? `in folder ${temp[temp[id].parent].title}` : "on the desktop"} would you like to move it?`)) {
-                    console.log("replace")
-                } else {
+                if (temp[id].parent === null) {
+                    alert(`${temp[id].title} already exist on the desktop`)
                     replace = false
+                } else {
+                    if (nest.id.slice(2) == temp[id].parent) {
+                        alert(`${temp[id].title} already exist in this folder`)
+                    } else if (window.confirm(`${temp[id].title} already exist in folder ${temp[temp[id].parent].title} -- move it?`)) {
+                        console.log("replacing")
+                    } else {
+                        replace = false
+                    }
                 }
             }
             
@@ -57,6 +57,7 @@ export default function Doc({ id, title, parent, left, top, folders, setFolders,
                 temp[temp[id].parent].children = 
                 temp[temp[id].parent].children.filter(folderId => folderId !== id)
             }
+            
             if (!replace) {
                 setFolders(temp)
             } else if (nestClassName[1] === "droppable") {
@@ -77,9 +78,9 @@ export default function Doc({ id, title, parent, left, top, folders, setFolders,
                 setY(null)
                 setX(null)
             }
-            return function cleanup() { mounted = false }
+            setUpdate(false)
         }
-    }, [moving])
+    })
 
     useEffect(() => {
         if (offSetY) {
@@ -106,10 +107,8 @@ export default function Doc({ id, title, parent, left, top, folders, setFolders,
         } else if (duplicate) {
             setDuplicate(false)
         }
-        setOriginalPos([x, y])
         setClassName("file")
         setZ("1000")
-        setMoving(true)
         setOffSetX(e.pageX - e.target.getBoundingClientRect().left + 5)
         setOffSetY(e.pageY - e.target.getBoundingClientRect().top + 5)
     }
@@ -129,11 +128,11 @@ export default function Doc({ id, title, parent, left, top, folders, setFolders,
         if (parent !== null && document.getElementById(`c-${parent}`) && e.target.parentElement.parentElement.parentElement.id === "App") {
             document.getElementById(`c-${parent}`).appendChild(fileEl.current)
         }
-        setMoving(false)
         setOffSetX(0)
         setOffSetY(0)
         setZ("0")
         setClassName("droppable file")
+        setUpdate(true)
         if (!nest && !parent) setNest(document.querySelector(".App"))
         document.removeEventListener('mousemove', drag)
         document.removeEventListener('mouseup', stop)
@@ -201,7 +200,7 @@ export default function Doc({ id, title, parent, left, top, folders, setFolders,
             id={`d-${id}`}
             ref={fileEl}
             className={className}
-            style={{ "position": position, "top": y, "left": x, "zIndex": z }}
+            style={{ "position": position, "top": Math.min(y, dimensions.height - 94), "left": Math.min(x, dimensions.width - 94), "zIndex": z }}
             >
             <div className="file-image-container">
                 <img draggable="false"

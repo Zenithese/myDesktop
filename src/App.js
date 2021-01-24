@@ -107,6 +107,7 @@ function App() {
   }, [parentClassName])
 
   const renderFolders = () => {
+    // console.log("rendering")
     const renderFolders = []
     for (const folder in folders) {
       if (folders[folder].parent === null) {
@@ -123,6 +124,7 @@ function App() {
             folders={folders}
             setFolders={setFolders}
             accessToken={accessToken}
+            dimensions={dimensions}
             key={folder}
           />
           :
@@ -157,6 +159,7 @@ function App() {
         contentWidth={folders[folder].contentWidth}
         contentHeight={folders[folder].contentHeight}
         dimensions={dimensions}
+        opened={opened}
         setOpened={setOpened}
         accessToken={accessToken}
         key={`c-${folder}`}

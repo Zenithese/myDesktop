@@ -8,7 +8,6 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
   const folderEl = useRef(null)
   const [value, setValue] = useState(title)
   const [className, setClassName] = useState("droppable folder")
-  const [moving, setMoving] = useState(false)
   const [offSetX, setOffSetX] = useState(0)
   const [offSetY, setOffSetY] = useState(0)
   const [position, setPosition] = useState(parent ? "grid" : "fixed")
@@ -17,13 +16,16 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
   const [z, setZ] = useState("0")
   const [nest, setNest] = useState(null)
   const [originalPos, setOriginalPos] = useState([0, 0])
+  const [update, setUpdate] = useState(false)
 
   useEffect(() => {
     let mounted = true
-    if (!moving && nest && mounted) {
+    if (update && nest && mounted) {
       if (nest.id.slice(2) === folderEl.current.id.slice(2)) {
         setX(originalPos[0])
         setY(originalPos[1])
+        nest.className = nest.className.slice(8)
+        setNest(null)
         return
       }
       const nestClassName = nest.className.split(" ")
@@ -41,9 +43,10 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
         temp[id].left = x
         setFolders(temp)
       }
+      setUpdate(false)
       return function cleanup() { mounted = false }
     } 
-  }, [moving])
+  })
 
   useEffect(() => {
     if (offSetY) {
@@ -68,7 +71,6 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
     setOriginalPos([x, y])
     setClassName("folder")
     setZ("1000")
-    setMoving(true)
     setOffSetX(e.pageX - e.target.getBoundingClientRect().left + 5)
     setOffSetY(e.pageY - e.target.getBoundingClientRect().top + 5)
   }
@@ -88,7 +90,7 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
     if (parent !== null && document.getElementById(`c-${parent}`) && e.target.parentElement.parentElement.parentElement.id === "App") {
       document.getElementById(`c-${parent}`).appendChild(folderEl.current)
     }
-    setMoving(false)
+    setUpdate(true)
     setOffSetX(0)
     setOffSetY(0)
     setZ("0")
