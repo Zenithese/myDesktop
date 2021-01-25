@@ -48,13 +48,12 @@ export default function ContextMenu({ array, parentClassName, directionReveal, f
             const temp = { ...folders };
             (function recursiveDelete(id = e.target.id, inital = true) {
                 if (temp[id].children) {
-                    temp[id].children.forEach(id => {
-                        if (temp[id].children) {
-                            recursiveDelete(id, false)
-                        } else {
-                            setOpened(prev => prev.filter(_id => _id != id))
-                            delete temp[id]
-                        }
+                    temp[id].children.forEach(ID => {
+                        if (temp[ID].children) {
+                            recursiveDelete(ID, false)
+                        } 
+                        setOpened(prev => prev.filter(_id => _id != ID))
+                        delete temp[ID]
                     })
                 }
                 if (inital) {

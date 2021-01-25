@@ -106,6 +106,7 @@ function App() {
   }, [parentClassName])
 
   const renderFolders = () => {
+    console.log(folders)
     const renderFolders = []
     for (const folder in folders) {
       if (folders[folder].parent === null) {
