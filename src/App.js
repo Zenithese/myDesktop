@@ -189,6 +189,7 @@ function App() {
           setFolders={setFolders}
           array={contexts} 
           setBackground={setBackground}
+          setOpened={setOpened}
         />
       </div>
       {renderFolders()}

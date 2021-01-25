@@ -1,7 +1,7 @@
 import './context_menu.css'
 import {useState, useEffect} from 'react';
 
-export default function ContextMenu({ array, parentClassName, directionReveal, folders, setFolders, setBackground }) {
+export default function ContextMenu({ array, parentClassName, directionReveal, folders, setFolders, setBackground, setOpened }) {
 
     const [openContexts, setOpenContexts] = useState([]);
     const [update, setUpdate] = useState(true);
@@ -52,6 +52,7 @@ export default function ContextMenu({ array, parentClassName, directionReveal, f
                         if (temp[id].children) {
                             recursiveDelete(id, false)
                         } else {
+                            setOpened(prev => prev.filter(_id => _id != id))
                             delete temp[id]
                         }
                     })
@@ -62,6 +63,7 @@ export default function ContextMenu({ array, parentClassName, directionReveal, f
                     } else {
                         if (temp[id].parent) temp[temp[id].parent].children = temp[temp[id].parent].children.filter(folderId => folderId !== Number(id))
                     }
+                    setOpened(prev => prev.filter(_id => _id != id))
                     delete temp[id]
                     setFolders(temp)
                 } 
@@ -92,6 +94,7 @@ export default function ContextMenu({ array, parentClassName, directionReveal, f
                     setUpdate={setUpdate}
                     directionReveal={directionReveal} 
                     setBackground={setBackground}
+                    setOpened={setOpened}
                 />
             )
         }
@@ -105,7 +108,7 @@ export default function ContextMenu({ array, parentClassName, directionReveal, f
     )
 }
 
-function NestedContext({ text, array, parentClassName, openContexts, num, setOpenContexts, update, setUpdate, directionReveal, setBackground }) {
+function NestedContext({ text, array, parentClassName, openContexts, num, setOpenContexts, update, setUpdate, directionReveal, setBackground, setOpened }) {
 
     const [className, setClassName] = useState("contextmenu")
 
@@ -140,7 +143,7 @@ function NestedContext({ text, array, parentClassName, openContexts, num, setOpe
                 {text + " =>"}
             </div>
             <div className="nested-context" >
-                <ContextMenu array={array} parentClassName={className} directionReveal={directionReveal} setBackground={setBackground} />
+                <ContextMenu array={array} parentClassName={className} directionReveal={directionReveal} setBackground={setBackground} setOpened={setOpened} />
             </div>
         </div>
     )
