@@ -106,7 +106,6 @@ function App() {
   }, [parentClassName])
 
   const renderFolders = () => {
-    console.log(folders)
     const renderFolders = []
     for (const folder in folders) {
       if (folders[folder].parent === null) {
@@ -169,7 +168,14 @@ function App() {
 
   const initOpen = (folder, index) => {
     const temp = { ...folders }
-    const contentPos = { x: 300 + (index * 15), y: 300 - (index * 15)}
+    const contentPos = { x: 300 + (index * 15), y: 300 - (index * 15) }
+    opened.forEach(folder => {
+      const { contentX, contentY } = folders[folder]
+      if (contentX === contentPos.x && contentY === contentPos.y) {
+        contentPos.x = contentPos.x + ((opened.length - index) * 15)
+        contentPos.y = contentPos.y - ((opened.length - index) * 15)
+      }
+    })
     folders[folder].contentX = contentPos.x
     folders[folder].contentY = contentPos.y
     setFolders(temp)
