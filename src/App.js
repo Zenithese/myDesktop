@@ -148,13 +148,14 @@ function App() {
 
   const renderContents = () => {
     return opened.map((folder, index) => {
+      if (folders[folder].contentX === null) initOpen(folder, index)
       return <Contents
         id={`c-${folder}`}
         children={folders[folder].children}
         folders={folders}
         setFolders={setFolders}
-        contentX={folders[folder].contentX === null ? 300 + (index * 15) : folders[folder].contentX}
-        contentY={folders[folder].contentY === null ? 300 - (index * 15) : folders[folder].contentY}
+        contentX={folders[folder].contentX}
+        contentY={folders[folder].contentY}
         contentWidth={folders[folder].contentWidth}
         contentHeight={folders[folder].contentHeight}
         dimensions={dimensions}
@@ -164,6 +165,14 @@ function App() {
         key={`c-${folder}`}
       />
     })
+  }
+
+  const initOpen = (folder, index) => {
+    const temp = { ...folders }
+    const contentPos = { x: 300 + (index * 15), y: 300 - (index * 15)}
+    folders[folder].contentX = contentPos.x
+    folders[folder].contentY = contentPos.y
+    setFolders(temp)
   }
 
   return (
