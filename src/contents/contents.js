@@ -49,7 +49,7 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
             setFolders(temp)
             setdropped(false)
         }
-    })
+    }, [dropped, folders, id, x, y, setFolders])
 
     const start = (e) => {
         if (e.target.className === "close-button") return
@@ -83,7 +83,7 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
     }
 
     const handleMouseDown = (e) => {
-        if (e.target.className === "close-button" || e.target.className === "folder-image") return
+        if (e.target.className === "close-button" || e.target.className === "folder-image" || e.target.className === "file-image") return
         document.querySelector(".App").appendChild(contentsContainerEl.current)
     }
 

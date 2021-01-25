@@ -15,7 +15,6 @@ export default function GAPI({ folders, setFolders, accessToken, setAccessToken,
 
     useEffect(() => {
         if (!signedInUser) {
-            console.log("siging in")
             handleClientLoad()
         } else {
             fileExists("nerwer_data")
@@ -114,7 +113,6 @@ export default function GAPI({ folders, setFolders, accessToken, setAccessToken,
                     setUpdatable(true)
                 })
             } else {
-                // console.log("creating file")
                 createPositionsFile()
             }
         });

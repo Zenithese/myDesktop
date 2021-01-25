@@ -21,6 +21,7 @@ export default function Doc({ id, title, parent, left, top, folders, setFolders,
     const [nest, setNest] = useState(null)
     const [duplicate, setDuplicate] = useState(false)
     const [update, setUpdate] = useState(false)
+    const [originalPos, setOriginalPos] = useState([0, 0])
 
     useEffect(() => {
         if (nest && update) {
@@ -33,9 +34,10 @@ export default function Doc({ id, title, parent, left, top, folders, setFolders,
                     alert(`${temp[id].title} already exist on the desktop`)
                     replace = false
                 } else {
+                    debugger
                     if (nest.id.slice(2) == temp[id].parent) {
                         alert(`${temp[id].title} already exist in this folder`)
-                    } else if (window.confirm(`${temp[id].title} already exist in folder ${temp[temp[id].parent].title} -- move it?`)) {
+                    } else if (temp[temp[id].parent] ? window.confirm(`${temp[id].title} already exist in folder ${temp[temp[id].parent].title} -- move it?`) : true) {
                         console.log("replacing")
                     } else {
                         replace = false
@@ -53,7 +55,7 @@ export default function Doc({ id, title, parent, left, top, folders, setFolders,
                     'webViewLink': webViewLink,
                     'iconLink': iconLink
                 }
-            } else if (temp[id].parent) {
+            } else if (temp[temp[id].parent]) {
                 temp[temp[id].parent].children = 
                 temp[temp[id].parent].children.filter(folderId => folderId !== id)
             }
@@ -67,7 +69,6 @@ export default function Doc({ id, title, parent, left, top, folders, setFolders,
                 setFolders(temp)
                 nest.className = nest.className.slice(8)
             } else if (nest.id === "App") {
-                console.log("effecting postion")
                 temp[id].parent = null
                 temp[id].top = y
                 temp[id].left = x
@@ -107,6 +108,7 @@ export default function Doc({ id, title, parent, left, top, folders, setFolders,
         } else if (duplicate) {
             setDuplicate(false)
         }
+        setOriginalPos([x, y])
         setClassName("file")
         setZ("1000")
         setOffSetX(e.pageX - e.target.getBoundingClientRect().left + 5)

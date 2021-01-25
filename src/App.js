@@ -4,7 +4,6 @@ import ContextMenu from './context_menu/contextmenu';
 import Folder from './folder/folder';
 import Contents from './contents/contents';
 import FloatingSearchButton from './floating_search_button/floating_search_button';
-import GAPI from './gapi/gapi';
 import Doc from './doc/doc';
 import Greeting from './greeting/greeting'
 
@@ -107,7 +106,6 @@ function App() {
   }, [parentClassName])
 
   const renderFolders = () => {
-    // console.log("rendering")
     const renderFolders = []
     for (const folder in folders) {
       if (folders[folder].parent === null) {
@@ -183,13 +181,6 @@ function App() {
         signedInUser={signedInUser}
         setSignedInUser={setSignedInUser}
       /> 
-      {/* <GAPI 
-        folders={folders} 
-        setFolders={setFolders} 
-        accessToken={accessToken}
-        setAccessToken={setAccessToken}
-        setDisplayGreeting={setDisplayGreeting}
-      /> */}
       <div style={{ "display": display, "position": "fixed", "top": top, "left": left, "flexDirection": "row-reverse", "zIndex": "10000" }}>
         <ContextMenu
           parentClassName={parentClassName}

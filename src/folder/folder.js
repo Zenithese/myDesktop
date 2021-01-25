@@ -30,7 +30,7 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
       }
       const nestClassName = nest.className.split(" ")
       const temp = { ...folders }
-      if (temp[id].parent) temp[temp[id].parent].children = temp[temp[id].parent].children.filter(folderId => folderId !== id)
+      if (temp[temp[id].parent]) temp[temp[id].parent].children = temp[temp[id].parent].children.filter(folderId => folderId !== id)
       if (nestClassName[1] === "droppable") {
         temp[nest.id.slice(2)].children.push(Number(id))
         temp[id].parent = Number(nest.id.slice(2))

@@ -44,7 +44,6 @@ export default function FloatingSearchButton({ closeSearch, setCloseSearch, driv
     }
 
     const renderResults = () => {
-        // console.log(driveDocuments)
         if (driveDocuments[currentResult]) {
             const { id, name, webViewLink, iconLink } = driveDocuments[currentResult]
             return (
@@ -84,10 +83,6 @@ export default function FloatingSearchButton({ closeSearch, setCloseSearch, driv
             })
                 .then(function (response) {
                     const res = JSON.parse(response.body);
-                    // res.files.forEach(file => {
-                    //     if (folders[file.id]) console.log("match")
-                    // })
-                    // console.log(folders)
                     setDriveDocuments(res.files);
                 });
         } else {
