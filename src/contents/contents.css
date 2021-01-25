@@ -22,6 +22,11 @@
 .close-button {
     display: flex;
     float: left;
+    margin-left: 3px;
+}
+
+.close-button:hover {
+    cursor: pointer;
 }
 
 .corner-1 {
