@@ -17,6 +17,7 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
   const [nest, setNest] = useState(null)
   const [originalPos, setOriginalPos] = useState([0, 0])
   const [update, setUpdate] = useState(false)
+  const [stopped, setStopped] = useState(false)
 
   useEffect(() => {
     let mounted = true
@@ -36,14 +37,15 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
       }
       const nestClassName = nest.className.split(" ")
       const temp = { ...folders }
-      if (temp[temp[id].parent]) temp[temp[id].parent].children = temp[temp[id].parent].children.filter(folderId => folderId !== id)
       if (nestClassName[1] === "droppable") {
+        if (temp[temp[id].parent]) temp[temp[id].parent].children = temp[temp[id].parent].children.filter(folderId => folderId !== id)
         temp[nest.id.slice(2)].children.push(Number(id))
         temp[id].parent = Number(nest.id.slice(2))
         setPosition(null)
         setFolders(temp)
         nest.className = nest.className.slice(8)
       } else if (nest.id === "App") {
+        if (temp[temp[id].parent]) temp[temp[id].parent].children = temp[temp[id].parent].children.filter(folderId => folderId !== id)
         temp[id].parent = null
         temp[id].top = y
         temp[id].left = x
@@ -90,6 +92,7 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
     setOriginalPos([x, y])
     setClassName("folder")
     setZ("1000")
+    setStopped(false)
     setOffSetX(e.pageX - e.target.getBoundingClientRect().left + 5)
     setOffSetY(e.pageY - e.target.getBoundingClientRect().top + 5)
   }
@@ -114,6 +117,7 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
     setOffSetY(0)
     setZ("0")
     setClassName("droppable folder")
+    setStopped(true)
     if (!nest && !parent) setNest(document.querySelector(".App"))
     document.removeEventListener('mousemove', drag)
     document.removeEventListener('mouseup', stop)
