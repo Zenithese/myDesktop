@@ -140,6 +140,14 @@ export default function GAPI({ folders, setFolders, accessToken, setAccessToken,
         xhr.send(form);
     }
 
+    const handleReset = () => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('PATCH', 'https://www.googleapis.com/upload/drive/v3/files/' + appDataId + '?uploadType=media');
+        xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+        xhr.responseType = 'json';
+        xhr.send(JSON.stringify({}));
+    }
+
     return (
         <div className="auth-container">
             {signedInUser ? 
@@ -150,6 +158,7 @@ export default function GAPI({ folders, setFolders, accessToken, setAccessToken,
                 " to lose said functionality!"
                 : 
                 " to gain said functionality!"}
+            <button style={{ position: "fixed", top: "0", left: "0" }}onClick={() => handleReset()}>reset</button>
         </div>
     );
 };
