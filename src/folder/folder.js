@@ -21,15 +21,17 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
   useEffect(() => {
     let mounted = true
     if (update && nest && mounted) {
-      if (nest.id.slice(2) === folderEl.current.id.slice(2)) {
+      if (checkParents(nest.id.slice(2), folderEl.current.id.slice(2))) {
+        alert("Nesting a folder into itself is not permitted")
+        nest.className = nest.className.slice(8)
         if (parent) {
           setPosition(null)
+          setNest(null)
         } else {
           setX(originalPos[0])
           setY(originalPos[1])
+          setNest(document.querySelector(".App"))
         }
-        nest.className = nest.className.slice(8)
-        setNest(null)
         return
       }
       const nestClassName = nest.className.split(" ")
@@ -72,6 +74,17 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
       }
     }
   }, [position])
+
+  const checkParents = (nestID, folderID) => {
+    // debugger
+    if (nestID == folderID) {
+      console.log("subfolder conflict")
+      return true
+    }
+    if (folders[nestID] && folders[nestID].parent) {
+      return checkParents(folders[nestID].parent, folderID)
+    }
+  }
 
   const start = (e) => {
     setOriginalPos([x, y])
