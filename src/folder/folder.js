@@ -17,7 +17,7 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
   const [nest, setNest] = useState(null)
   const [originalPos, setOriginalPos] = useState([0, 0])
   const [update, setUpdate] = useState(false)
-  const [stopped, setStopped] = useState(false)
+  // const [stopped, setStopped] = useState(false)
 
   useEffect(() => {
     let mounted = true
@@ -92,7 +92,7 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
     setOriginalPos([x, y])
     setClassName("folder")
     setZ("1000")
-    setStopped(false)
+    // setStopped(false)
     setOffSetX(e.pageX - e.target.getBoundingClientRect().left + 5)
     setOffSetY(e.pageY - e.target.getBoundingClientRect().top + 5)
   }
@@ -117,7 +117,7 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
     setOffSetY(0)
     setZ("0")
     setClassName("droppable folder")
-    setStopped(true)
+    // setStopped(true)
     if (!nest && !parent) setNest(document.querySelector(".App"))
     document.removeEventListener('mousemove', drag)
     document.removeEventListener('mouseup', stop)
@@ -135,6 +135,8 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
       folder.hidden = true
       let nestable = document.elementFromPoint(e.clientX, e.clientY)
       if (nestable = nestable.closest(".droppable")) {
+        const prevCurrent = document.querySelector(".current")
+        if (prevCurrent && prevCurrent !== nestable) prevCurrent.className = prevCurrent.className.slice(8)
         if (nestable.className.slice(0, 7) !== "current") {
           nestable.className = "current " + nestable.className
           setNest(nestable)

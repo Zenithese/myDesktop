@@ -6,11 +6,6 @@
     justify-self: center;
 }
 
-.current {
-    background-color: cyan;
-    border-radius: 2px;
-}
-
 .file-image-container {
     position: relative;
 }
