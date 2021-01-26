@@ -22,8 +22,12 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
     let mounted = true
     if (update && nest && mounted) {
       if (nest.id.slice(2) === folderEl.current.id.slice(2)) {
-        setX(originalPos[0])
-        setY(originalPos[1])
+        if (parent) {
+          setPosition(null)
+        } else {
+          setX(originalPos[0])
+          setY(originalPos[1])
+        }
         nest.className = nest.className.slice(8)
         setNest(null)
         return
@@ -57,8 +61,10 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
 
   useEffect(() => {
     if (position === null) {
-      setY(nest.getBoundingClientRect().top)
-      setX(nest.getBoundingClientRect().left + 3)
+      if (nest) {
+        setY(nest.getBoundingClientRect().top)
+        setX(nest.getBoundingClientRect().left + 3)
+      }
       setPosition("grid")
     } else if (position === "fixed") {
       if (parent !== null) {
