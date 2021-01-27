@@ -6,6 +6,16 @@
     opacity: .97;
 }
 
+.flash {
+    animation: flash .5s linear 2;
+}
+
+@keyframes flash {
+    80% {
+        opacity: .5;
+    }
+}
+
 .contents {
     width: 300px;
     height: 300px;
@@ -27,6 +37,11 @@
 
 .close-button:hover {
     cursor: pointer;
+}
+
+.back-button {
+    float: left;
+    margin-left: 5px;
 }
 
 .corner-1 {

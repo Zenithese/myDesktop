@@ -44,6 +44,20 @@ export default function ContextMenu({ array, parentClassName, directionReveal, f
                 temp[parent].children.push(id)
             }
             setFolders(temp)
+        } else if (e.target.innerHTML === "Open separate window") {
+            setOpened(prev => {
+                const id = e.target.id
+                if (prev.includes(Number(id))) {
+                    const border = document.getElementById(`b-${id}`)
+                    border.className = "flash"
+                    setTimeout(() => {
+                        border.className = ""
+                    }, 2000);
+                    prev.push(prev.splice(prev.indexOf(Number(id)), 1)[0])
+                    return prev
+                }
+                return [...prev, Number(id)]
+            })
         } else if (e.target.innerHTML === "Delete Folder" || e.target.innerHTML === "Delete File") {
             const temp = { ...folders };
             (function recursiveDelete(id = e.target.id, inital = true) {

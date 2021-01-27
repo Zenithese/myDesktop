@@ -55,11 +55,18 @@ function App() {
       setLeft(e.clientX + 5 + "px")
     }
     if (e.target.className === "folder-image") {
-      setContexts([{
-        type: "li",
-        text: "Delete Folder",
-        id: e.target.id
-      }])
+      setContexts([
+        {
+          type: "li",
+          text: "Delete Folder",
+          id: e.target.id
+        },
+        {
+          type: "li",
+          text: "Open separate window",
+          id: e.target.id
+        }
+      ])
     } else if (e.target.className === "file-image") {
       setContexts([{
         type: "li",
@@ -106,7 +113,6 @@ function App() {
   }, [parentClassName])
 
   const renderFolders = () => {
-    console.log(folders)
     const renderFolders = []
     for (const folder in folders) {
       if (folders[folder].parent === null) {

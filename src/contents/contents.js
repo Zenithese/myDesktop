@@ -52,7 +52,7 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
     }, [dropped, folders, id, x, y, setFolders])
 
     const start = (e) => {
-        if (e.target.className === "close-button") return
+        if (e.target.className === "close-button" || e.target.className === "back-button") return
         setClassName("contents")
         document.querySelector(".App").appendChild(contentsContainerEl.current)
         setOffSetX(e.pageX - e.target.getBoundingClientRect().left)
@@ -75,6 +75,10 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
         setdropped(true)
         document.removeEventListener('mousemove', drag)
         document.removeEventListener('mouseup', stop)
+        setOpened(prev => {
+            prev.push(prev.splice(prev.indexOf(Number(id.slice(2))), 1)[0])
+            return prev
+        })
     }
 
     const handleClose = () => {
@@ -82,8 +86,22 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
         setOpened(prev => prev.filter(id => id !== _id))
     }
 
+    const handleBack = () => {
+        const _id = Number(id.slice(2))
+        if (folders[_id].parent) {
+            setOpened(prev => {
+                const temp = { ...folders }
+                temp[folders[_id].parent].contentX = temp[_id].contentX
+                temp[folders[_id].parent].contentY = temp[_id].contentY
+                setFolders(temp)
+                prev = prev.filter(id => id !== _id)
+                return [...prev, Number(folders[_id].parent)]
+            })
+        }
+    }
+
     const handleMouseDown = (e) => {
-        if (e.target.className === "close-button" || e.target.className === "folder-image" || e.target.className === "file-image") return
+        if (e.target.className === "close-button" || e.target.className === "folder-image" || e.target.className === "file-image" || e.target.className === "back-button") return
         document.querySelector(".App").appendChild(contentsContainerEl.current)
     }
 
@@ -128,7 +146,7 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
             onMouseDown={(e) => handleMouseDown(e)}
             style={{ "display": "grid", "top": Math.min(y, dimensions.height - height - 5), "left": Math.min(x, dimensions.width - width - 5), "width": `${width}px`, "height": `${height}px` }}>
             <ContentsBorder 
-                id={id}
+                id={id.slice(2)}
                 width={width} 
                 setWidth={setWidth} 
                 height={height} 
@@ -140,6 +158,7 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
             <div className="contents-handle"
                 onMouseDown={(e) => start(e)}>
                 <div className="close-button" onClick={() => handleClose()}>&#10006;</div>
+                <div className="back-button" onClick={() => handleBack()}>{"<"}</div>
             </div>
             <div
                 id={id}

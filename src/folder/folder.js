@@ -125,7 +125,16 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
 
   const handleDoubleClick = () => {
     if (opened.includes(Number(id))) return;
-    setOpened(prev => [ ...prev, Number(id)])
+    setOpened(prev => {
+      if (folders[id].parent) {
+        const temp = { ...folders }
+        temp[id].contentX = temp[folders[id].parent].contentX
+        temp[id].contentY = temp[folders[id].parent].contentY
+        setFolders(temp)
+        prev = prev.filter(ID => folders[id].parent !== ID)
+      }
+      return [ ...prev, Number(id)]
+    })
   }
 
   const nestFolder = (e) => {

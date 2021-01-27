@@ -15,8 +15,8 @@ export default function ContentsBorder({ id, width, setWidth, height, setHeight,
     useEffect(() => {
         if (finished) {
             const temp = { ...folders }
-            temp[id.slice(2)].contentWidth = width
-            temp[id.slice(2)].contentHeight = height
+            temp[id].contentWidth = width
+            temp[id].contentHeight = height
             setFolders(temp)
             setFinished(false)
         }
@@ -79,7 +79,7 @@ export default function ContentsBorder({ id, width, setWidth, height, setHeight,
     }
 
     return (
-        <div onMouseDown={(e) => start(e)}>
+        <div id={`b-${id}`} onMouseDown={(e) => start(e)}>
             <div className="corner-1"></div>
             <div className="corner-2"></div>
             <div className="corner-3"></div>
