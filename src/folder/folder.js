@@ -137,6 +137,8 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
         const temp = { ...folders }
         temp[id].contentX = temp[folders[id].parent].contentX
         temp[id].contentY = temp[folders[id].parent].contentY
+        temp[id].contentWidth = temp[folders[id].parent].contentWidth
+        temp[id].contentHeight = temp[folders[id].parent].contentHeight
         setFolders(temp)
         prev = prev.filter(ID => folders[id].parent !== ID)
       }

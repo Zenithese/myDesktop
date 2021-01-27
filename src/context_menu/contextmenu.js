@@ -55,6 +55,18 @@ export default function ContextMenu({ array, parentClassName, directionReveal, f
                     }, 2000);
                     return prev
                 }
+                if (document.getElementById(`b-${folders[id].parent}`)) {
+                    const temp = { ...folders }
+                    if (temp[temp[id].parent].contentX <= temp[id].contentX + 10
+                        && temp[temp[id].parent].contentX >= temp[id].contentX - 10) {
+                        temp[id].contentX = temp[id].contentX + 15
+                    }
+                    if (temp[temp[id].parent].contentY <= temp[id].contentY + 10
+                        && temp[temp[id].parent].contentY >= temp[id].contentY - 10) {
+                        temp[id].contentY = temp[id].contentY + 15
+                    }
+                    setFolders(temp)
+                }
                 return [...prev, Number(id)]
             })
         } else if (e.target.innerHTML === "Delete Folder" || e.target.innerHTML === "Delete File") {

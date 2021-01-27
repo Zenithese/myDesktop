@@ -96,6 +96,8 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
                 const temp = { ...folders }
                 temp[folders[_id].parent].contentX = temp[_id].contentX
                 temp[folders[_id].parent].contentY = temp[_id].contentY
+                temp[folders[_id].parent].contentWidth = temp[_id].contentWidth
+                temp[folders[_id].parent].contentHeight = temp[_id].contentHeight
                 setFolders(temp)
                 prev = prev.filter(id => id !== _id)
                 return [...prev, Number(folders[_id].parent)]
