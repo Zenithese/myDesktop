@@ -7,12 +7,12 @@
 }
 
 .flash {
-    animation: flash .5s linear 2;
+    animation: flash .4s linear 2;
 }
 
 @keyframes flash {
     80% {
-        opacity: .5;
+        opacity: .2;
     }
 }
 

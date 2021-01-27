@@ -53,7 +53,6 @@ export default function ContextMenu({ array, parentClassName, directionReveal, f
                     setTimeout(() => {
                         border.className = ""
                     }, 2000);
-                    prev.push(prev.splice(prev.indexOf(Number(id)), 1)[0])
                     return prev
                 }
                 return [...prev, Number(id)]

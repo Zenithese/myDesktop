@@ -54,7 +54,6 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
     const start = (e) => {
         if (e.target.className === "close-button" || e.target.className === "back-button") return
         setClassName("contents")
-        document.querySelector(".App").appendChild(contentsContainerEl.current)
         setOffSetX(e.pageX - e.target.getBoundingClientRect().left)
         setOffSetY(e.pageY - e.target.getBoundingClientRect().top)
     }
@@ -75,10 +74,6 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
         setdropped(true)
         document.removeEventListener('mousemove', drag)
         document.removeEventListener('mouseup', stop)
-        setOpened(prev => {
-            prev.push(prev.splice(prev.indexOf(Number(id.slice(2))), 1)[0])
-            return prev
-        })
     }
 
     const handleClose = () => {
