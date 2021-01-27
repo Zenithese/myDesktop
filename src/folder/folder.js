@@ -124,7 +124,14 @@ export default function Folder({ left, top, title, parent, id, folders, setFolde
   }
 
   const handleDoubleClick = () => {
-    if (opened.includes(Number(id))) return;
+    if (opened.includes(Number(id))) {
+      const border = document.getElementById(`b-${id}`)
+      border.className = "flash"
+      setTimeout(() => {
+        border.className = ""
+      }, 2000);
+      return
+    }
     setOpened(prev => {
       if (folders[id].parent) {
         const temp = { ...folders }

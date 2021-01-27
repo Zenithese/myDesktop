@@ -31,8 +31,8 @@
 
 .close-button {
     display: flex;
-    float: left;
-    margin-left: 3px;
+    float: right;
+    margin-right: 3px;
 }
 
 .close-button:hover {
@@ -41,7 +41,11 @@
 
 .back-button {
     float: left;
-    margin-left: 5px;
+    margin-left: 3px;
+}
+
+.back-button:hover {
+    cursor: pointer;
 }
 
 .corner-1 {

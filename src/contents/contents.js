@@ -83,6 +83,14 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
 
     const handleBack = () => {
         const _id = Number(id.slice(2))
+        const border = document.getElementById(`b-${folders[_id].parent}`)
+        if (border) {
+            border.className = "flash"
+            setTimeout(() => {
+                border.className = ""
+            }, 2000);
+            return
+        }
         if (folders[_id].parent) {
             setOpened(prev => {
                 const temp = { ...folders }
@@ -153,7 +161,7 @@ export default function Contents({ id, children, folders, setFolders, contentX, 
             <div className="contents-handle"
                 onMouseDown={(e) => start(e)}>
                 <div className="close-button" onClick={() => handleClose()}>&#10006;</div>
-                <div className="back-button" onClick={() => handleBack()}>{"<"}</div>
+                <div className="back-button" onClick={() => handleBack()}>&#x25C0;</div>
             </div>
             <div
                 id={id}
