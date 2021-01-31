@@ -141,11 +141,14 @@ export default function GAPI({ folders, setFolders, accessToken, setAccessToken,
     }
 
     const handleReset = () => {
-        const xhr = new XMLHttpRequest();
-        xhr.open('PATCH', 'https://www.googleapis.com/upload/drive/v3/files/' + appDataId + '?uploadType=media');
-        xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
-        xhr.responseType = 'json';
-        xhr.send(JSON.stringify({}));
+        if (window.confirm("This will remove all folders and files from the desktop -- continue?")) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('PATCH', 'https://www.googleapis.com/upload/drive/v3/files/' + appDataId + '?uploadType=media');
+            xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+            xhr.responseType = 'json';
+            xhr.send(JSON.stringify({}));
+            window.location.reload(false)
+        }
     }
 
     return (
